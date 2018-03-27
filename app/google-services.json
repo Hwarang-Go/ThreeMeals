@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "491876705440",
+    "firebase_url": "https://threemealsdev.firebaseio.com",
+    "project_id": "threemealsdev",
+    "storage_bucket": "threemealsdev.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:491876705440:android:05497ade9b5edc2c",
+        "android_client_info": {
+          "package_name": "com.example.hwarang.threemealsdev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "491876705440-fr9k1pr9jcvomnd8578r5nbiqp1vjpk6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.hwarang.threemealsdev",
+            "certificate_hash": "bada730986291c41dc9a7cbe8d2dae8dd64f6eae"
+          }
+        },
+        {
+          "client_id": "491876705440-ijrca8as44ncqhb2nte5l74f3a35mij3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD-jTj_7muBO5MK7e-4C6hYSZ8WdyxQfmo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "491876705440-ijrca8as44ncqhb2nte5l74f3a35mij3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
