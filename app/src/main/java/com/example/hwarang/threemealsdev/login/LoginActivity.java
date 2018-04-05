@@ -34,6 +34,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final int RC_SIGN_IN = 9001;
 
     private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListner; // 사용자 로그인 상태변화 체크
 
     private GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;
@@ -57,20 +58,50 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         // Initialize auth
         mAuth = FirebaseAuth.getInstance();
+
+        mAuthListner = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user != null){
+                    //User is signed in
+                    Intent i = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(i);
+                    Log.d(TAG, "onAuthStateChanged:signed_in:" + user.getUid());
+                    finish();
+                }else{
+                    // User is signed out
+                    Log.d(TAG, "onAcuthStateChanged:signed_out");
+                }
+            }
+        };
+
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
+        mAuth.addAuthStateListener(mAuthListner);
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mAuthListner != null){
+            mAuth.removeAuthStateListener(mAuthListner);
+        }
     }
 
     private void signIn(){
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
