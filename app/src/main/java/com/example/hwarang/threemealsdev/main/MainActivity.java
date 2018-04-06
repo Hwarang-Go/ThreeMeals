@@ -12,14 +12,19 @@ import com.example.hwarang.threemealsdev.R;
 import com.example.hwarang.threemealsdev.chatbot.ChatbotFragment;
 import com.example.hwarang.threemealsdev.home.HomeFragment;
 import com.example.hwarang.threemealsdev.statistic.StatisticFragment;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
+
     @BindView(R.id.main_bottomnavigation)
     BottomNavigationView bottomNavigationView;
+
+    private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
