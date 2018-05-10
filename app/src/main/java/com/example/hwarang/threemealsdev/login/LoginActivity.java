@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthCredential;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -35,6 +36,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListner; // 사용자 로그인 상태변화 체크
+    private DatabaseReference mDatabase;
 
     private GoogleSignInClient mGoogleSignInClient;
     private TextView mStatusTextView;

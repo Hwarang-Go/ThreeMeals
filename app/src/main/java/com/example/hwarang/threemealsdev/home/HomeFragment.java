@@ -1,6 +1,7 @@
 package com.example.hwarang.threemealsdev.home;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.hwarang.threemealsdev.R;
+import com.example.hwarang.threemealsdev.login.LoginActivity;
+import com.example.hwarang.threemealsdev.main.MainActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import butterknife.ButterKnife;
 
@@ -44,5 +48,9 @@ public class HomeFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
     }
 
-
+    /*public void onClickButton(View view){
+        FirebaseAuth.getInstance().signOut();
+        Intent i = new Intent(getActivity(), LoginActivity.class);
+        startActivity(i);
+    }*/
 }
