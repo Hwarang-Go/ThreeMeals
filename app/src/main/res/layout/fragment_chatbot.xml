@@ -6,17 +6,54 @@
     android:orientation="vertical"
     tools:context=".chatbot.ChatbotFragment">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
 
         <!-- TODO: Update blank fragment layout -->
-        <TextView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/message_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="chatbot_fragment" />
+            android:layout_height="370dp">
+        </android.support.v7.widget.RecyclerView>
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/message_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+            <ImageView
+                android:id="@+id/bot_image"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                />
+        </LinearLayout>
 
+        <EditText
+            android:id="@+id/message_text"
+            android:layout_width="209dp"
+            android:layout_height="80dp"
+            android:layout_alignTop="@+id/listen_button"
+            android:layout_toRightOf="@+id/listen_button"
+            android:textSize="15sp"   />
 
-</FrameLayout>
+        <ImageButton
+            android:id="@+id/listen_button"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="64dp"
+            android:src="@drawable/mic" />
+
+        <Button
+            android:id="@+id/send_button"
+            android:text="전송"
+            android:textSize="35dp"
+            android:layout_width="100dp"
+            android:layout_height="80dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="64dp" />
+        </RelativeLayout>
+    </FrameLayout>
