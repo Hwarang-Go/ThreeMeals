@@ -5,6 +5,7 @@ public class UserData {
     public String firebaseKey; // Firebase Realtime Database 에 등록된 키 값
     public String userName;     // 사용자 이름
     public String email;        // user email
+    public String userPhoto;    // user profile picture
     public Long userAge;      // 사용자 나이
     public Double userHeight;   // 사용자 키
     public Double userWeight;   // 사용자 몸무게
