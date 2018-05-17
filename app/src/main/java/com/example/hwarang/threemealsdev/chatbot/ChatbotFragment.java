@@ -4,6 +4,7 @@ package com.example.hwarang.threemealsdev.chatbot;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.service.autofill.Dataset;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -23,6 +24,7 @@ import com.example.hwarang.threemealsdev.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -57,6 +59,7 @@ public class ChatbotFragment extends Fragment implements AIListener {
 
     public DietModel dietmodel = new DietModel();
     public ChatModel chatmodel = new ChatModel();
+    public infoModel infoModel = new infoModel();
 
     AIService aiService;    //dialogflow 자연어음성처리
     AIDataService aiDataService;    //dialogflow 채팅처리
@@ -155,14 +158,15 @@ public class ChatbotFragment extends Fragment implements AIListener {
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
         simpleDateFormat_date.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
 
-            dietmodel.rice = result.getStringParameter("rice");     //food로 통합할것
-            dietmodel.soup = result.getStringParameter("soup");
-            dietmodel.kimchi = result.getStringParameter("kimchi");
+            dietmodel.food = result.getStringParameter("foodname");
             dietmodel.End = result.getStringParameter("End");
             dietmodel.query = result.getResolvedQuery();
             dietmodel.time = simpleDateFormat.format(date);
-            String date_time = simpleDateFormat_date.format(date);
 
+            if(result.getFulfillment().getSpeech().equals("retry")||dietmodel.End.equals("true")) {}  // 이상한 말이 아니고 끝이라고하지않으면 식단에 입력
+            else {
+                output_info();
+            }
             chatmodel.user = true;
             chatmodel.message = dietmodel.query;
             chatmodel.time = simpleDateFormat.format(date);
@@ -171,19 +175,43 @@ public class ChatbotFragment extends Fragment implements AIListener {
             chatmodel.message = result.getFulfillment().getSpeech();
             FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);  // 매세지에 대한 반응을 chatDB에 넣음
 
-            //dialogflow에서 End 값을 입력 받을때까지 반복하게 해놨는데 그 값을 얻기위한 반응으로 다른음식먹은것을 물어보는게
-            // 아아아아 -> retry -> 제대로입력 -> 다른것은요..
-            // 제대로입력 -> 다른것은요 -> 아아아아 -> 다른것은요..
-            // 어떻게바꿔야하나생각중 End값을dialogflow에서반복되게 말고 앱자체에서 반응메세지 보내고하는방식으로
-            // food로 통합하면 해결 될꺼같긴함 end값을 안받고 음식이름이 나올때까지 반복하게 되니까
-
-            if(result.getFulfillment().getSpeech().equals("retry")||dietmodel.End.equals("true")) {}  // 이상한 말이 아니고 끝이라고하지않으면 식단에 입력
-            else
-                FirebaseDatabase.getInstance().getReference().child(uid).child("Diet").child(date_time).push().setValue(dietmodel);
-
             chatRoom(); // 채팅창최신화
     }
 
+    void output_info(){
+        ValueEventListener nutirentListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // Get Post object and use the values to update the UI;
+                infoModel = dataSnapshot.getValue(infoModel.class);
+                dietmodel.kcal = infoModel.kcal;
+                dietmodel.carbo = infoModel.carbo;
+                dietmodel.protein = infoModel.protein;
+                dietmodel.fat = infoModel.fat;
+
+                FirebaseDatabase.getInstance().getReference().child(uid).child("Diet").push().setValue(dietmodel);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        FirebaseDatabase.getInstance().getReference().child("info").child(dietmodel.food).addValueEventListener(nutirentListener);
+    }
+/*
+    void input_info(String name, double kcal, double car, double pro, double fat, double calcium, double iron, double natrium, double vitaminA, double vitaminB, double vitaminC)
+    {
+        infoModel info = new infoModel();
+        info.foodname = name;
+        info.kcal = kcal;
+        info.carbo = car;
+        info.protein = pro;
+        info.fat = fat;
+        FirebaseDatabase.getInstance().getReference().child("info").child(name).setValue(info);
+    }
+*/
     void chatRoom(){
         //내 uid로 된 chat이 있으면 다 읽어와서 recycyclerview로출력
         FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -197,6 +225,7 @@ public class ChatbotFragment extends Fragment implements AIListener {
             }
         });
     }
+
 
     //aiservice 음성처리 관련
     @Override
