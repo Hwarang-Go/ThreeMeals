@@ -1,5 +1,6 @@
 package com.example.hwarang.threemealsdev.main;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -23,20 +24,14 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.main_bottomnavigation)
     BottomNavigationView bottomNavigationView;
 
+    public RadarChart radarChart;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-        RadarChart chart = (RadarChart) findViewById(R.id.chart);
-        chart.setBackgroundColor(Color.rgb(60, 65, 82));
-        chart.getDescription().setEnabled(false);
-        chart.setWebLineWidth(1f);
-        chart.setWebColor(Color.LTGRAY);
-        chart.setWebLineWidthInner(1f);
-        chart.setWebColorInner(Color.LTGRAY);
-        chart.setWebAlpha(100);
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
