@@ -165,7 +165,7 @@ public class ChatbotFragment extends Fragment implements AIListener {
 
             if(result.getFulfillment().getSpeech().equals("retry")||dietmodel.End.equals("true")) {}  // 이상한 말이 아니고 끝이라고하지않으면 식단에 입력
             else {
-                output_info();
+                    output_info();
             }
             chatmodel.user = true;
             chatmodel.message = dietmodel.query;
@@ -184,10 +184,18 @@ public class ChatbotFragment extends Fragment implements AIListener {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 // Get Post object and use the values to update the UI;
                 infoModel = dataSnapshot.getValue(infoModel.class);
+                dietmodel.foodAmount = infoModel.foodAmount;
                 dietmodel.kcal = infoModel.kcal;
                 dietmodel.carbo = infoModel.carbo;
                 dietmodel.protein = infoModel.protein;
                 dietmodel.fat = infoModel.fat;
+                dietmodel.calcium = infoModel.calcium;
+                dietmodel.iron = infoModel.iron;
+                dietmodel.natrium = infoModel.natrium;
+                dietmodel.vitaminA = infoModel.vitaminA;
+                dietmodel.vitaminB = infoModel.vitaminB;
+                dietmodel.vitaminC = infoModel.vitaminC;
+
 
                 FirebaseDatabase.getInstance().getReference().child(uid).child("Diet").push().setValue(dietmodel);
             }
@@ -201,14 +209,21 @@ public class ChatbotFragment extends Fragment implements AIListener {
         FirebaseDatabase.getInstance().getReference().child("info").child(dietmodel.food).addValueEventListener(nutirentListener);
     }
 /*
-    void input_info(String name, double kcal, double car, double pro, double fat, double calcium, double iron, double natrium, double vitaminA, double vitaminB, double vitaminC)
+    void input_info(String name,double foodAmount, double kcal, double car, double pro, double fat, double calcium, double iron, double natrium, double vitaminA, double vitaminB, double vitaminC)
     {
         infoModel info = new infoModel();
         info.foodname = name;
+        info.foodAmount = foodAmount;
         info.kcal = kcal;
-        info.carbo = car;
-        info.protein = pro;
-        info.fat = fat;
+        info.carbo = car/10;
+        info.protein = pro/10;
+        info.fat = fat/10;
+        info.calcium = calcium/10;
+        info.iron = iron/10;
+        info.natrium = natrium/10;
+        info.vitaminA = vitaminA/10;
+        info.vitaminB = vitaminB/100;
+        info.vitaminC = vitaminC/10;
         FirebaseDatabase.getInstance().getReference().child("info").child(name).setValue(info);
     }
 */
