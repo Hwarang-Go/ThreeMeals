@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +34,10 @@ import butterknife.ButterKnife;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class StatisticFragment extends Fragment {
+public class StatisticFragment extends ListFragment {
     RadarChart radarChart;
+    //ListView listView;
+    ListViewAdapter adapter;
 
 
     public StatisticFragment() {
@@ -98,6 +102,17 @@ public class StatisticFragment extends Fragment {
         lgd.setYEntrySpace(5f);
         lgd.setTextColor(Color.rgb(50,100,100));
         radarChart.setRotationEnabled(false);
+
+
+
+        adapter = new ListViewAdapter() ;
+        setListAdapter(adapter) ;
+        adapter.addItem(78,"칼로리", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
+        adapter.addItem(72,"탄수화물", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
+        adapter.addItem(48,"단백질", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
+        adapter.addItem(98,"지방", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
+        adapter.addItem(28,"칼슘", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
+
 
         return view;
     }
