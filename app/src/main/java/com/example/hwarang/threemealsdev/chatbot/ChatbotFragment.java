@@ -1,10 +1,11 @@
 package com.example.hwarang.threemealsdev.chatbot;
 
 
+import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.service.autofill.Dataset;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -12,19 +13,20 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.hwarang.threemealsdev.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
@@ -46,6 +48,7 @@ import ai.api.model.Result;
 import butterknife.ButterKnife;
 
 import static ai.api.services.SpeaktoitRecognitionServiceImpl.TAG;
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -56,6 +59,12 @@ public class ChatbotFragment extends Fragment implements AIListener {
     private ImageButton listen_button;  //마이크버튼
     private RecyclerView recyclerView;  //채팅창
     private String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private SharedPreferences dateorder;
+    private SharedPreferences datetime;
+
+    private long unixtime = System.currentTimeMillis();
+    private Date date = new Date(unixtime);
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //a =am/pm, EEE=day ,,, 메세지 시간
 
     public DietModel dietmodel = new DietModel();
     public ChatModel chatmodel = new ChatModel();
@@ -81,11 +90,9 @@ public class ChatbotFragment extends Fragment implements AIListener {
         StrictMode.setThreadPolicy(policy);
 
         int permission = ContextCompat.checkSelfPermission(this.requireContext(), android.Manifest.permission.RECORD_AUDIO);
-        if(FirebaseAuth.getInstance().getCurrentUser()==null) { //처음실행시
-            if (permission != PackageManager.PERMISSION_GRANTED) { //녹음기능 활성화 X면
-                Log.i(TAG, "Permission to record denied");
-                makeRequest();  // 녹음기능 활성화 요청
-            }
+        if (permission != PackageManager.PERMISSION_GRANTED) { //녹음기능 활성화 X면
+            Log.i(TAG, "Permission to record denied");
+            ActivityCompat.requestPermissions(this.requireActivity(),new String[]{android.Manifest.permission.RECORD_AUDIO},101);
         }
 
         View view = inflater.inflate(R.layout.fragment_chatbot, container, false);
@@ -103,12 +110,14 @@ public class ChatbotFragment extends Fragment implements AIListener {
         aiDataService = new AIDataService(this.getContext(), config);
         aiService.setListener(this);
 
+
         listen_button.setOnClickListener(new View.OnClickListener() {   //마이크 누르면 startlistening
             @Override
             public void onClick(View v) {
                         aiService.startListening();
             }
         });
+
         send_button.setOnClickListener(new View.OnClickListener() {     // 전송 누르면 채팅처리
             @Override
             public void onClick(View v) {
@@ -124,18 +133,36 @@ public class ChatbotFragment extends Fragment implements AIListener {
             }
         });
 
+
+        dateorder = getActivity().getSharedPreferences("datedorder", MODE_PRIVATE);
+        if(dateorder.getInt("dateorder",0)==0) { //처음실행시 welcome 실행
+            AIRequest aiRequest = new AIRequest();
+            aiRequest.setQuery("welcome");
+            try {
+                final AIResponse aiResponse = aiDataService.request(aiRequest); // 내 메세지에 대한 반응
+                onResult(aiResponse);   //결과 보여줌
+            } catch (AIServiceException e) {
+                e.printStackTrace();
+            }
+        }
+        else {
+            if(Integer.parseInt(simpleDateFormat.format(date).substring(11,13))!=dateorder.getInt("dateorder",0))
+            {
+                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+                chatmodel.time = simpleDateFormat.format(date);
+                chatmodel.user = false;
+                chatmodel.message = "안녕하세요! 드신음식을 1개씩 말씀해주세요";
+                FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);  // 매세지에 대한 반응을 chatDB에 넣음
+            }
+        }
         chatRoom(); //채팅내용 채팅창에 출력
         ButterKnife.bind(this, view);
 
         return view;
     }
 
-    //녹음기능 요청
-    protected void makeRequest(){
-        ActivityCompat.requestPermissions(this.requireActivity(),
-                new String[]{android.Manifest.permission.RECORD_AUDIO},101);
-    }
-    /*
+    //record audio 권한 관련 저장
+    @Override
     public void onRequestPermissionsResult(int requestCode, String permissions[],int[] grantResults){
         switch (requestCode){
             case 101:
@@ -144,89 +171,131 @@ public class ChatbotFragment extends Fragment implements AIListener {
                 else{}
                 return;
         }
-    }*/
+    }
+
+    //aiservice 음성처리 관련
+    @Override
+    public void onError(AIError error) {
+        // t.setText(error.toString());
+    }
+    @Override   //ai음성 오디오 레벨설졍
+    public void onAudioLevel(float level) {
+    }
+    @Override
+    public void onListeningStarted() {
+        message.setText("asdf");
+    }
+    @Override
+    public void onListeningCanceled() {
+    }
+    @Override
+    public void onListeningFinished() {
+    }
+
 
     @Override
     public void onResult(AIResponse response) { // 반응에 대한 결과
 
         Result result = response.getResult();
 
-        long unixtime = System.currentTimeMillis();
-        Date date = new Date(unixtime);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //a =am/pm, EEE=day ,,, 메세지 시간
-        SimpleDateFormat simpleDateFormat_date = new SimpleDateFormat("yyyy-MM-dd");    // 식단날짜 아직 쓸지 결정X
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-        simpleDateFormat_date.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
 
             dietmodel.food = result.getStringParameter("foodname");
             dietmodel.End = result.getStringParameter("End");
             dietmodel.query = result.getResolvedQuery();
             dietmodel.time = simpleDateFormat.format(date);
 
-            if(result.getFulfillment().getSpeech().equals("retry")||dietmodel.End.equals("true")) {}  // 이상한 말이 아니고 끝이라고하지않으면 식단에 입력
-            else {
-                    output_info();
+            int date_int = Integer.parseInt(simpleDateFormat.format(date).substring(11,13));    //현재시 저장
+
+            dateorder = getActivity().getSharedPreferences("datedorder", MODE_PRIVATE);
+            SharedPreferences.Editor editor = dateorder.edit();
+            datetime = getActivity().getSharedPreferences("datetime", MODE_PRIVATE);
+            final SharedPreferences.Editor editordate = datetime.edit();
+            datetime.getString("datetime","");
+
+            //현재시 계산을 통한 시간대
+            int k = dateorder.getInt("dateorder",0);
+            if(k == 0) {
+                editor.remove("dateorder");
+                if (result.getStringParameter("date-time").equals("")) {
+                    editordate.putString("datetime",simpleDateFormat.format(date).substring(0,10));
+                    if (5 <= date_int && date_int < 11) {   //아침
+                        editor.putInt("dateorder", 1);
+                    } else if (11 <= date_int && date_int < 16) {   //점심
+                        editor.putInt("dateorder", 2);
+                    } else
+                        editor.putInt("dateorder", 3);  //저녁
+                }
+                else {  // 이미 지난 시간의 식단 입력시 그 식단에 입력
+                    int date_int2 = Integer.parseInt(result.getStringParameter("date-time").substring(11,13));
+                    editordate.putString("datetime",result.getStringParameter("date-time").replace("2019","2018").substring(0,10));
+
+                    if (5 <= date_int2 && date_int2 < 11) {
+                        editor.putInt("dateorder", 1);
+                    } else if (11 <= date_int2 && date_int2 < 16) {
+                        editor.putInt("dateorder", 2);
+                    } else
+                        editor.putInt("dateorder", 3);
+                }
             }
+            editor.commit();
+            editordate.commit();
+
+            dietmodel.date_order = dateorder.getInt("dateorder",0);
+            if(dietmodel.End.equals("true")){
+                editor.remove("dateorder");
+                editor.commit();
+            }
+
+            if(result.getFulfillment().getSpeech().equals("retry")||dietmodel.End.equals("true")||dietmodel.food.equals("welcome")) {}  // 이상한 말이 아니고 끝이면 식단에 입력 안함
+            else {
+                ValueEventListener nutirentListener = new ValueEventListener() { //음식 info 불러와서 넣기
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Get Post object and use the values to update the UI;
+                        infoModel = dataSnapshot.getValue(infoModel.class);
+                        dietmodel.foodAmount = infoModel.foodAmount;
+                        dietmodel.kcal = infoModel.kcal;
+                        dietmodel.carbo = infoModel.carbo;
+                        dietmodel.protein = infoModel.protein;
+                        dietmodel.fat = infoModel.fat;
+                        dietmodel.calcium = infoModel.calcium;
+                        dietmodel.iron = infoModel.iron;
+                        dietmodel.natrium = infoModel.natrium;
+                        dietmodel.vitaminA = infoModel.vitaminA;
+                        dietmodel.vitaminB = infoModel.vitaminB;
+                        dietmodel.vitaminC = infoModel.vitaminC;
+
+                        FirebaseDatabase.getInstance().getReference().child(uid).child("Diet").child(datetime.getString("datetime",""))
+                                .push().setValue(dietmodel);
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Getting Post failed, log a message
+                        Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                        // ...
+                    }
+                };
+
+                FirebaseDatabase.getInstance().getReference().child("info").child(dietmodel.food).addValueEventListener(nutirentListener);
+
+            }
+
             chatmodel.user = true;
             chatmodel.message = dietmodel.query;
             chatmodel.time = simpleDateFormat.format(date);
-            FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel); // 내 메세지를 chatDB에넣음
+            if(!chatmodel.message.equals("welcome"))
+                FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel); // 내 메세지를 chatDB에넣음
             chatmodel.user = false;
             chatmodel.message = result.getFulfillment().getSpeech();
+            if(chatmodel.message.equals("retry")){
+                chatmodel.message = "무슨 말씀인지 이해하지 못했습니다. 다시 말씀해주세요";
+            }
             FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);  // 매세지에 대한 반응을 chatDB에 넣음
 
-            chatRoom(); // 채팅창최신화
+            chatRoom(); // 채팅창 최신화해서 나타내기
     }
 
-    void output_info(){
-        ValueEventListener nutirentListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // Get Post object and use the values to update the UI;
-                infoModel = dataSnapshot.getValue(infoModel.class);
-                dietmodel.foodAmount = infoModel.foodAmount;
-                dietmodel.kcal = infoModel.kcal;
-                dietmodel.carbo = infoModel.carbo;
-                dietmodel.protein = infoModel.protein;
-                dietmodel.fat = infoModel.fat;
-                dietmodel.calcium = infoModel.calcium;
-                dietmodel.iron = infoModel.iron;
-                dietmodel.natrium = infoModel.natrium;
-                dietmodel.vitaminA = infoModel.vitaminA;
-                dietmodel.vitaminB = infoModel.vitaminB;
-                dietmodel.vitaminC = infoModel.vitaminC;
-
-
-                FirebaseDatabase.getInstance().getReference().child(uid).child("Diet").push().setValue(dietmodel);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Getting Post failed, log a message
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
-                // ...
-            }
-        };
-        FirebaseDatabase.getInstance().getReference().child("info").child(dietmodel.food).addValueEventListener(nutirentListener);
-    }
-/*
-    void input_info(String name,double foodAmount, double kcal, double car, double pro, double fat, double calcium, double iron, double natrium, double vitaminA, double vitaminB, double vitaminC)
-    {
-        infoModel info = new infoModel();
-        info.foodname = name;
-        info.foodAmount = foodAmount;
-        info.kcal = kcal;
-        info.carbo = car/10;
-        info.protein = pro/10;
-        info.fat = fat/10;
-        info.calcium = calcium/10;
-        info.iron = iron/10;
-        info.natrium = natrium/10;
-        info.vitaminA = vitaminA/10;
-        info.vitaminB = vitaminB/100;
-        info.vitaminC = vitaminC/10;
-        FirebaseDatabase.getInstance().getReference().child("info").child(name).setValue(info);
-    }
-*/
     void chatRoom(){
         //내 uid로 된 chat이 있으면 다 읽어와서 recycyclerview로출력
         FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -240,26 +309,6 @@ public class ChatbotFragment extends Fragment implements AIListener {
             }
         });
     }
-
-
-    //aiservice 음성처리 관련
-    @Override
-    public void onError(AIError error) {
-       // t.setText(error.toString());
-    }
-    @Override   //ai음성 오디오 레벨설졍
-    public void onAudioLevel(float level) {
-    }
-    @Override
-    public void onListeningStarted() {
-    }
-    @Override
-    public void onListeningCanceled() {
-    }
-    @Override
-    public void onListeningFinished() {
-    }
-    /////////////////////////////////////////////////////
 
     // item_message -> fragment_chatbot의 recyclerview의 채팅창으로 만듬
     class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
@@ -290,7 +339,23 @@ public class ChatbotFragment extends Fragment implements AIListener {
         }
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            ((MessageViewHolder)holder).textView_message.setText(messages.get(position).message);
+            MessageViewHolder messageViewHolder = (MessageViewHolder)holder;
+
+            // 내 메세지
+            if(messages.get(position).user) {
+                messageViewHolder.textView_message.setText(messages.get(position).message);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chatuser2);
+                messageViewHolder.linearLayout_chatbot.setVisibility(View.INVISIBLE);
+                messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
+            }
+            // 챗봇 메세지
+            else{
+                messageViewHolder.textView_message.setText(messages.get(position).message);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chatbot2);
+                messageViewHolder.linearLayout_chatbot.setVisibility(View.VISIBLE);
+                messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);
+            }
+
         }
         @Override
         public int getItemCount() {
@@ -298,10 +363,14 @@ public class ChatbotFragment extends Fragment implements AIListener {
         }
         private class MessageViewHolder extends RecyclerView.ViewHolder {
             public TextView textView_message;
+            public LinearLayout linearLayout_chatbot;
+            public LinearLayout linearLayout_main;
 
             public MessageViewHolder(View itemView) {
                 super(itemView);
                 textView_message = itemView.findViewById(R.id.messageItem_textview);
+                linearLayout_chatbot = itemView.findViewById(R.id.item_message_LinearLayout_chatbot);
+                linearLayout_main = itemView.findViewById(R.id.item_message_LinearLayout_main);
             }
         }
     }
