@@ -13,7 +13,16 @@ public class UserData {
     public Double userCalorie;  // 사용자 권장 섭취 칼로리
     public Boolean userGender;  // 사용자 성별
     public Double userPhysical;   // 사용자 활동량
-    public Double[] userNutrient; // 사용자 권장 섭취 영양소
+    //public double userKcal; // 사용자 추천 칼로리
+    public double userCarbo;    // 사용자 추천 탄수화물
+    public double userProtein;  // 사용자 추천 단백질
+    public double userFat;  // 사용자 추천 지방
+    public double userCalcium;  // 사용자 추천 칼슘
+    public double userIron; // 사용자 추천 철
+    public double userNatrium;  // 사용자 추천 나트륨
+    public double userVitaminA; // 사용자 추천 비타민A
+    public double userVitaminB; // 사용자 추천 비타민B
+    public double userVitaminC; // 사용자 추천 비타민C
 
 
     public UserData(){
@@ -22,7 +31,10 @@ public class UserData {
     }
 
     public UserData(String userName, String email, Long userAge, Double userHeight,
-                    Double userWeight, Double stdWeight, Double userCalorie, Boolean userGender, Double userPhysical){
+                    Double userWeight, Double stdWeight, Double userCalorie, Boolean userGender,
+                    Double userPhysical, double userCarbo, double userProtein,
+                    double userFat, double userCalcium, double userIron, double userNatrium,
+                    double userVitaminA, double userVitaminB, double userVitaminC){
         this.userName = userName;
         this.email = email;
         this.userAge = userAge;
@@ -32,6 +44,17 @@ public class UserData {
         this.userCalorie = userCalorie;
         this.userGender = userGender;
         this.userPhysical = userPhysical;
+        //this.userKcal = userKcal;
+        this.userCarbo = userCarbo;
+        this.userProtein = userProtein;
+        this.userFat = userFat;
+        this.userCalcium = userCalcium;
+        this.userIron = userIron;
+        this.userNatrium = userNatrium;
+        this.userVitaminA = userVitaminA;
+        this.userVitaminB = userVitaminB;
+        this.userVitaminC = userVitaminC;
+
     }
     //TODO 나중에 영양소 추가해서 생성자 바꿔줘야함
 

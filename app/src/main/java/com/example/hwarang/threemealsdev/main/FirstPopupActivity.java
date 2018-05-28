@@ -59,7 +59,16 @@ public class FirstPopupActivity extends Activity {
     private Double userWeight;   // 사용자 몸무게
     private Double stdWeight;    // 사용자 표준 몸무게
     private Double userCalorie;  // 사용자 권장 섭취 칼로리
-    private Double[] userNutrient; // 사용자 권장 섭취 영양소
+    public double userKcal; // 사용자 추천 칼로리
+    public double userCarbo;    // 사용자 추천 탄수화물
+    public double userProtein;  // 사용자 추천 단백질
+    public double userFat;  // 사용자 추천 지방
+    public double userCalcium;  // 사용자 추천 칼슘
+    public double userIron; // 사용자 추천 철
+    public double userNatrium;  // 사용자 추천 나트륨
+    public double userVitaminA; // 사용자 추천 비타민A
+    public double userVitaminB; // 사용자 추천 비타민B
+    public double userVitaminC; // 사용자 추천 비타민C
     private Boolean userGender;
     private Double userPhysical;
     private ArrayAdapter sAdapter;
@@ -190,16 +199,240 @@ public class FirstPopupActivity extends Activity {
 
         if(userGender){
             // man
-            userCalorie = 662-(9.53*userAge)+(userPhysical*(15.91*stdWeight+539.6*userHeight/100));
+            userCalorie = 662-(9.53*userAge)+(userPhysical*(15.91*stdWeight+539.6*userHeight/100)); // Kcal
+            if(userAge <= 2){
+                userCarbo = 60; // 그램
+                userProtein = 15;   // 그램
+                userFat = 25;   // 그램
+                userVitaminA = 300; // 마이크로그램
+                userVitaminB = 0.6; // 밀리그램
+                userVitaminC = 40;  // 밀리그램
+                userCalcium = 500;  // 밀리그램
+                userNatrium = 0.7;  // 밀리그램
+                userIron = 6;   // 밀리그램
+            }else if(userAge <= 5){
+                userCarbo = 60;
+                userProtein = 20;
+                userFat = 25;
+                userVitaminA = 300;
+                userVitaminB = 0.7;
+                userVitaminC = 40;
+                userCalcium = 600;
+                userNatrium = 0.9;
+                userIron = 7;
+            }else if(userAge <= 8){
+                userCarbo = 90;
+                userProtein = 20;
+                userFat = 25;
+                userVitaminA = 400;
+                userVitaminB = 0.9;
+                userVitaminC = 60;
+                userCalcium = 700;
+                userNatrium = 1.2;
+                userIron = 8;
+            }else if(userAge <= 11){
+                userCarbo = 90;
+                userProtein = 35;
+                userFat = 25;
+                userVitaminA = 550;
+                userVitaminB = 1.1;
+                userVitaminC = 70;
+                userCalcium = 800;
+                userNatrium = 1.3;
+                userIron = 11;
+            }else if(userAge <= 14){
+                userCarbo = userCalorie*0.6/4;
+                userProtein = 50;
+                userFat = userCalorie*0.25/9;
+                userVitaminA = 700;
+                userVitaminB = 1.5;
+                userVitaminC = 100;
+                userCalcium = 1000;
+                userNatrium = 1.5;
+                userIron = 14;
+            }else if(userAge <= 18){
+                userCarbo = userCalorie*0.6/4;
+                userProtein = 55;
+                userFat = userCalorie*0.25/9;
+                userVitaminA = 850;
+                userVitaminB = 1.7;
+                userVitaminC = 110;
+                userCalcium = 900;
+                userNatrium = 1.5;
+                userIron = 15;
+            }else if(userAge <= 29){
+                userCarbo = userCalorie*0.6/4;
+                userProtein = 55;
+                userFat = userCalorie*0.25/9;
+                userVitaminA = 750;
+                userVitaminB = 1.5;
+                userVitaminC = 100;
+                userCalcium = 750;
+                userNatrium = 1.5;
+                userIron = 10;
+            }else if(userAge <= 49){
+                userCarbo = userCalorie*0.6/4;
+                userProtein = 55;
+                userFat = userCalorie*0.25/9;
+                userVitaminA = 750;
+                userVitaminB = 1.5;
+                userVitaminC = 100;
+                userCalcium = 750;
+                userNatrium = 1.5;
+                userIron = 10;
+            }else if(userAge <= 64){
+                userCarbo = userCalorie*0.6/4;
+                userProtein = 50;
+                userFat = userCalorie*0.25/9;
+                userVitaminA = 700;
+                userVitaminB = 1.5;
+                userVitaminC = 100;
+                userCalcium = 700;
+                userNatrium = 1.4;
+                userIron = 9;
+            }else if(userAge <= 74){
+                userCarbo = userCalorie*0.6/4;
+                userProtein = 50;
+                userFat = userCalorie*0.25/9;
+                userVitaminA = 700;
+                userVitaminB = 1.5;
+                userVitaminC = 100;
+                userCalcium = 700;
+                userNatrium = 1.2;
+                userIron = 9;
+            }else{ // 75이상
+                userCarbo = userCalorie*0.6/4;
+                userProtein = 50;
+                userFat = userCalorie*0.25/9;
+                userVitaminA = 700;
+                userVitaminB = 1.5;
+                userVitaminC = 100;
+                userCalcium = 700;
+                userNatrium = 1.1;
+                userIron = 9;
+            }
         }else{
             // woman
             userCalorie = 354-(6.91*userAge)+(userPhysical*(9.36*stdWeight+726*userHeight/100));
+            if(userAge <= 2){
+                userCarbo = 60; // 그램
+                userProtein = 15;   // 그램
+                userFat = 25;   // 그램
+                userVitaminA = 300; // 마이크로그램
+                userVitaminB = 0.6; // 밀리그램
+                userVitaminC = 40;  // 밀리그램
+                userCalcium = 500;  // 밀리그램
+                userNatrium = 0.7;  // 밀리그램
+                userIron = 6;   // 밀리그램
+            }else if(userAge <= 5){
+                userCarbo = 60;
+                userProtein = 20;
+                userFat = 25;
+                userVitaminA = 300;
+                userVitaminB = 0.7;
+                userVitaminC = 40;
+                userCalcium = 600;
+                userNatrium = 0.9;
+                userIron = 7;
+            }else if(userAge <= 8){
+                userCarbo = 90;
+                userProtein = 25;
+                userFat = 25;
+                userVitaminA = 400;
+                userVitaminB = 0.7;
+                userVitaminC = 60;
+                userCalcium = 700;
+                userNatrium = 1.2;
+                userIron = 8;
+            }else if(userAge <= 11){
+                userCarbo = 90;
+                userProtein = 35;
+                userFat = 25;
+                userVitaminA = 500;
+                userVitaminB = 0.9;
+                userVitaminC = 80;
+                userCalcium = 800;
+                userNatrium = 1.3;
+                userIron = 10;
+            }else if(userAge <= 14){
+                userCarbo = userCalorie*0.6/4;
+                userProtein = 45;
+                userFat = userCalorie*0.25/9;
+                userVitaminA = 650;
+                userVitaminB = 1.2;
+                userVitaminC = 100;
+                userCalcium = 900;
+                userNatrium = 1.5;
+                userIron = 13;
+            }else if(userAge <= 18){
+                userCarbo = userCalorie*0.6/4;
+                userProtein = 45;
+                userFat = userCalorie*0.25/9;
+                userVitaminA = 600;
+                userVitaminB = 1.2;
+                userVitaminC = 100;
+                userCalcium = 900;
+                userNatrium = 1.5;
+                userIron = 17;
+            }else if(userAge <= 29){
+                userCarbo = userCalorie*0.6/4;
+                userProtein = 50;
+                userFat = userCalorie*0.25/9;
+                userVitaminA = 650;
+                userVitaminB = 1.2;
+                userVitaminC = 100;
+                userCalcium = 750;
+                userNatrium = 1.5;
+                userIron = 14;
+            }else if(userAge <= 49){
+                userCarbo = userCalorie*0.6/4;
+                userProtein = 45;
+                userFat = userCalorie*0.25/9;
+                userVitaminA = 650;
+                userVitaminB = 1.2;
+                userVitaminC = 100;
+                userCalcium = 750;
+                userNatrium = 1.5;
+                userIron = 14;
+            }else if(userAge <= 64){
+                userCarbo = userCalorie*0.6/4;
+                userProtein = 45;
+                userFat = userCalorie*0.25/9;
+                userVitaminA = 1600;
+                userVitaminB = 1.2;
+                userVitaminC = 100;
+                userCalcium = 700;
+                userNatrium = 1.4;
+                userIron = 8;
+            }else if(userAge <= 74){
+                userCarbo = userCalorie*0.6/4;
+                userProtein = 45;
+                userFat = userCalorie*0.25/9;
+                userVitaminA = 600;
+                userVitaminB = 1.2;
+                userVitaminC = 100;
+                userCalcium = 700;
+                userNatrium = 1.2;
+                userIron = 8;
+            }else{ // 75이상
+                userCarbo = userCalorie*0.6/4;
+                userProtein = 45;
+                userFat = userCalorie*0.25/9;
+                userVitaminA = 600;
+                userVitaminB = 1.2;
+                userVitaminC = 100;
+                userCalcium = 700;
+                userNatrium = 1.1;
+                userIron = 8;
+            }
         }
 
 
 
 
-        writeNewUser(uid ,mName, mEmail, userAge, userHeight, userWeight, stdWeight, userCalorie, userGender, userPhysical);
+        writeNewUser(uid ,mName, mEmail, userAge, userHeight, userWeight, stdWeight, userCalorie,
+                userGender, userPhysical, userCarbo, userProtein, userFat, userCalcium,
+                userIron, userNatrium, userVitaminA, userVitaminB, userVitaminC);
         //액티비티(팝업) 닫기
         finish();
     }
@@ -221,8 +454,13 @@ public class FirstPopupActivity extends Activity {
 
     //TODO ', Double[] userNutrient' 나중에 파라미터에 추가
     private void writeNewUser(String userId, String userName, String email, Long userAge, Double userHeight,
-                              Double userWeight, Double stdWeight, Double userCalorie, Boolean userGender, Double userPhysical){
-        UserData user = new UserData(userName, email, userAge, userHeight, userWeight, stdWeight, userCalorie, userGender, userPhysical);
+                              Double userWeight, Double stdWeight, Double userCalorie, Boolean userGender,
+                              Double userPhysical, double userCarbo, double userProtein,
+                              double userFat, double userCalcium, double userIron, double userNatrium,
+                              double userVitaminA, double userVitaminB, double userVitaminC){
+        UserData user = new UserData(userName, email, userAge, userHeight, userWeight, stdWeight,
+                userCalorie, userGender, userPhysical, userCarbo, userProtein, userFat, userCalcium,
+                userIron, userNatrium, userVitaminA, userVitaminB, userVitaminC);
 
         mDatabase.child("users").child(userId).setValue(user);
 
