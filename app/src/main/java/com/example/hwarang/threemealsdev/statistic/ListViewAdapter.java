@@ -1,6 +1,7 @@
 package com.example.hwarang.threemealsdev.statistic;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,19 @@ public class ListViewAdapter extends BaseAdapter {
 
 
         nutData.setText(listviewitem.getNutData()+"%");
+
+        if(listviewitem.getNutData() <=25)
+            nutData.setBackgroundColor(Color.rgb(179,45,0));
+        else if(listviewitem.getNutData() <=50)
+            nutData.setBackgroundColor(Color.rgb(248,182,81));
+        else if(listviewitem.getNutData() <=70)
+            nutData.setBackgroundColor(Color.rgb(3,210,168));
+        else if(listviewitem.getNutData() <=100)
+            nutData.setBackgroundColor(Color.rgb(3,182,140));
+        else
+            nutData.setBackgroundColor(Color.rgb(0,86,70));
+
+
         nutName.setText(listviewitem.getNutName());
         IB.setImageDrawable(listviewitem.getIcon());
 
