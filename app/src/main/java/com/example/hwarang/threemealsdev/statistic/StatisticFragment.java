@@ -109,9 +109,14 @@ public class StatisticFragment extends ListFragment {
         setListAdapter(adapter) ;
         adapter.addItem(78,"칼로리", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
         adapter.addItem(72,"탄수화물", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
-        adapter.addItem(48,"단백질", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
+        adapter.addItem(38,"단백질", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
         adapter.addItem(98,"지방", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
         adapter.addItem(28,"칼슘", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
+        adapter.addItem(12,"비타민A", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
+        adapter.addItem(52,"비타민B", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
+        adapter.addItem(28,"비타민C", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
+        adapter.addItem(8,"철분", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
+        adapter.addItem(99,"나트륨", ContextCompat.getDrawable(getActivity(), R.drawable.ic_morebutton));
 
 
         return view;

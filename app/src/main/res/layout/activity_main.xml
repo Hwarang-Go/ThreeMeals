@@ -23,18 +23,18 @@ tools:showIn="@layout/activity_main">
     app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-<android.support.design.widget.BottomNavigationView
-    android:id="@+id/main_bottomnavigation"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="?android:attr/windowBackground"
-    app:itemBackground="@color/colorPrimaryDark"
-    app:itemIconTint="@color/colorPrimary"
-    app:itemTextColor="@color/colorAccent"
-    app:layout_anchor="@id/main_fragment_container"
-    app:layout_anchorGravity="bottom"
-    app:layout_behavior=""
-    app:menu="@menu/menu_main_bottomnavigation" />
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/main_bottomnavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/windowBackground"
+        app:itemBackground="@color/colorPrimaryDark"
+        app:itemIconTint="@color/colorPrimary"
+        app:itemTextColor="@color/colorAccent"
+        app:layout_anchor="@id/main_fragment_container"
+        app:layout_anchorGravity="bottom"
+        app:layout_behavior=""
+        app:menu="@menu/menu_main_bottomnavigation" />
 
 
 </android.support.design.widget.CoordinatorLayout>
