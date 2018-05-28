@@ -2,6 +2,7 @@ package com.example.hwarang.threemealsdev.main;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
@@ -29,6 +30,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.github.mikephil.charting.charts.RadarChart;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +55,9 @@ public class MainActivity extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
 
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference(); // UserData 올릴 database
+
+
+    public RadarChart radarChart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
         // bottom Navigation view 부분 start
 
         //TODO 슬라이드로 넘기는 부분 구현해야함
+
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {
                     @Override

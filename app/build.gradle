@@ -44,6 +44,8 @@ dependencies {
 
     // butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
+    // mpAndroidchart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
 
