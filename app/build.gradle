@@ -27,15 +27,40 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation 'com.google.firebase:firebase-auth:12.0.1'
-    implementation 'com.google.android.gms:play-services-auth:12.0.1'
+
     implementation 'com.android.support:design:27.1.0'
     implementation 'com.android.support:support-v4:27.1.0'
+
+    implementation 'com.google.android.gms:play-services-auth:12.0.1'
+
     implementation 'com.android.support:mediarouter-v7:27.1.0'
+
+    // google
+    implementation 'com.google.android.gms:play-services-auth:12.0.1'
+
+    // firebase
+    implementation 'com.google.firebase:firebase-auth:12.0.1'
+    implementation 'com.google.firebase:firebase-database:12.0.1'
 
     // butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
+    // mpAndroidchart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+
+    // circle image view
+    implementation 'de.hdodenhof:circleimageview:2.2.0'
+
+    // picasso
+    implementation 'com.squareup.picasso:picasso:2.71828'
+
+    // Speech recognition
+    implementation 'ai.api:sdk:2.0.7@aar'
+    implementation 'ai.api:libai:1.6.12'
+    implementation 'com.google.code.gson:gson:2.8.1'
+    implementation 'commons-io:commons-io:2.4'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
