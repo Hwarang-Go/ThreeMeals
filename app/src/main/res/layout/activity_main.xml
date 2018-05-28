@@ -27,6 +27,7 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_alignParentTop="true"
                 android:elevation="4dp"
+                android:background="@color/mainColor"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
@@ -43,8 +44,8 @@
             android:id="@+id/main_bottomnavigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?android:attr/windowBackground"
-            app:itemBackground="@color/colorPrimaryDark"
+            android:background="@color/mainColor"
+            app:itemBackground="@color/mainColor"
             app:itemIconTint="@color/colorPrimary"
             app:itemTextColor="@color/colorAccent"
             app:layout_anchor="@id/main_fragment_container"

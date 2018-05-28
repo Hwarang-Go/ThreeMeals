@@ -68,9 +68,9 @@ public class MainActivity extends AppCompatActivity {
         // toolbar 설정 start
         toolbar = (Toolbar)findViewById(R.id.my_toolbar);
 
-        //setSupportActionBar(toolbar); // toolbar와 actionbar를 같게 만듬
-        toolbar.setBackgroundResource(R.color.titlebackground);
-        //getSupportActionBar().setDisplayShowTitleEnabled(false);
+        setSupportActionBar(toolbar); // toolbar와 actionbar를 같게 만듬
+        toolbar.setBackgroundResource(R.color.mainColor);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         // toolbar 설정 end
 
 
