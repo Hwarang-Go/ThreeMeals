@@ -15,29 +15,35 @@
         <com.github.mikephil.charting.charts.RadarChart
             android:id="@+id/chart"
             android:layout_width="match_parent"
-            android:layout_height="450dp"
+            android:layout_height="150dp"
             android:layout_margin="20dp"
             android:layout_weight="1">
 
         </com.github.mikephil.charting.charts.RadarChart>
-        
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="250dp"
-           android:orientation="vertical">
 
-           <ListView
-               android:id="@android:id/list"
-               android:layout_width="match_parent"
-               android:layout_height="match_parent"
-               android:layout_margin="20dp"
-               android:layout_weight="1"
-               android:background="#b2e9de"
-               android:choiceMode="singleChoice"
-               android:divider="#ffffff"
-               android:dividerHeight="8dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="230dp"
+            android:orientation="vertical">
 
-       </LinearLayout>
+            <ListView
+                android:id="@android:id/list"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_margin="20dp"
+                android:layout_weight="1"
+                android:background="#b2e9de"
+                android:choiceMode="singleChoice"
+                android:divider="#ffffff"
+                android:dividerHeight="8dp" />
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
 
 
 
