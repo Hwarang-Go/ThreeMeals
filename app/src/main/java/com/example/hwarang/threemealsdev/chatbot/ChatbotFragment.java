@@ -1,5 +1,6 @@
 package com.example.hwarang.threemealsdev.chatbot;
 
+
 import android.Manifest;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -67,6 +68,7 @@ public class ChatbotFragment extends Fragment implements AIListener {
     private SharedPreferences dateorder;
     private SharedPreferences welcomeflag;
     private SharedPreferences datetime;
+
     private long unixtime = System.currentTimeMillis();
     private Date date = new Date(unixtime);
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //a =am/pm, EEE=day ,,, 메세지 시간
@@ -75,13 +77,13 @@ public class ChatbotFragment extends Fragment implements AIListener {
         // Required empty public constructor
     }
 
-    public static Fragment getInstance() {
+    public static Fragment getInstance(){
         ChatbotFragment chatbotFragment = new ChatbotFragment();
         return chatbotFragment;
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
         //thread 관련 오류 안나게함
@@ -91,7 +93,7 @@ public class ChatbotFragment extends Fragment implements AIListener {
         int permission = ContextCompat.checkSelfPermission(this.requireContext(), android.Manifest.permission.RECORD_AUDIO);
         if (permission != PackageManager.PERMISSION_GRANTED) { //녹음기능 활성화 X면
             Log.i(TAG, "Permission to record denied");
-            ActivityCompat.requestPermissions(this.requireActivity(), new String[]{android.Manifest.permission.RECORD_AUDIO}, 101);
+            ActivityCompat.requestPermissions(this.requireActivity(),new String[]{android.Manifest.permission.RECORD_AUDIO},101);
         }
 
         View view = inflater.inflate(R.layout.fragment_chatbot, container, false);
@@ -113,7 +115,7 @@ public class ChatbotFragment extends Fragment implements AIListener {
         listen_button.setOnClickListener(new View.OnClickListener() {   //마이크 누르면 startlistening
             @Override
             public void onClick(View v) {
-                aiService.startListening();
+                        aiService.startListening();
             }
         });
 
@@ -123,12 +125,12 @@ public class ChatbotFragment extends Fragment implements AIListener {
                 AIRequest aiRequest = new AIRequest();
                 aiRequest.setQuery(message.getText().toString());   // 내 메세지를 요청
                 message.setText("");
-                try {
-                    final AIResponse aiResponse = aiDataService.request(aiRequest); // 내 메세지에 대한 반응
-                    onResult(aiResponse);   //결과 보여줌
-                } catch (AIServiceException e) {
-                    e.printStackTrace();
-                }
+                        try {
+                            final AIResponse aiResponse = aiDataService.request(aiRequest); // 내 메세지에 대한 반응
+                            onResult(aiResponse);   //결과 보여줌
+                        } catch (AIServiceException e) {
+                            e.printStackTrace();
+                        }
             }
         });
 
@@ -175,12 +177,12 @@ public class ChatbotFragment extends Fragment implements AIListener {
 
     //record audio 권한 관련 저장
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
+    public void onRequestPermissionsResult(int requestCode, String permissions[],int[] grantResults){
+        switch (requestCode){
             case 101:
-                if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                } else {
+                if(grantResults.length ==0||grantResults[0]!=PackageManager.PERMISSION_GRANTED){
                 }
+                else{}
                 return;
         }
     }
@@ -190,19 +192,16 @@ public class ChatbotFragment extends Fragment implements AIListener {
     public void onError(AIError error) {
         // t.setText(error.toString());
     }
-
     @Override   //ai음성 오디오 레벨설졍
     public void onAudioLevel(float level) {
     }
-
     @Override
     public void onListeningStarted() {
+        message.setText("asdf");
     }
-
     @Override
     public void onListeningCanceled() {
     }
-
     @Override
     public void onListeningFinished() {
     }
@@ -308,7 +307,6 @@ public class ChatbotFragment extends Fragment implements AIListener {
                                     .push().setValue(dietmodel);
                         }
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         // Getting Post failed, log a message
@@ -468,7 +466,7 @@ public class ChatbotFragment extends Fragment implements AIListener {
         chatRoom(); // 채팅창 최신화해서 나타내기
     }
 
-    void chatRoom() {
+    void chatRoom(){
         //내 uid로 된 chat이 있으면 다 읽어와서 recycyclerview로출력
         FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -476,7 +474,6 @@ public class ChatbotFragment extends Fragment implements AIListener {
                 recyclerView.setLayoutManager(new LinearLayoutManager(ChatbotFragment.super.getContext()));
                 recyclerView.setAdapter(new RecyclerViewAdapter());
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -486,58 +483,53 @@ public class ChatbotFragment extends Fragment implements AIListener {
     // item_message -> fragment_chatbot의 recyclerview의 채팅창으로 만듬
     class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         List<ChatModel> messages;
-
-        public RecyclerViewAdapter() {
+        public RecyclerViewAdapter(){
             messages = new ArrayList<>();
             FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     messages.clear();
-                    for (DataSnapshot item : dataSnapshot.getChildren()) {
+                    for(DataSnapshot item : dataSnapshot.getChildren()){
                         messages.add(item.getValue(ChatModel.class));
                     }
                     notifyDataSetChanged(); // 갱신
-                    recyclerView.scrollToPosition(messages.size() - 1); // 맨밑으로 스크롤 해줌
+                    recyclerView.scrollToPosition(messages.size()-1); // 맨밑으로 스크롤 해줌
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                 }
             });
         }
-
         @NonNull
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message, parent, false);
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_message,parent,false);
             return new MessageViewHolder(view);
         }
-
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-            MessageViewHolder messageViewHolder = (MessageViewHolder) holder;
+            MessageViewHolder messageViewHolder = (MessageViewHolder)holder;
 
             // 내 메세지
-            if (messages.get(position).user) {
+            if(messages.get(position).user) {
                 messageViewHolder.textView_message.setText(messages.get(position).message);
-                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chatbot3);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chatuser2);
                 messageViewHolder.linearLayout_chatbot.setVisibility(View.INVISIBLE);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
             }
             // 챗봇 메세지
-            else {
+            else{
                 messageViewHolder.textView_message.setText(messages.get(position).message);
-                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chatbot3);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chatbot2);
                 messageViewHolder.linearLayout_chatbot.setVisibility(View.VISIBLE);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);
             }
-        }
 
+        }
         @Override
         public int getItemCount() {
             return messages.size();
         }
-
         private class MessageViewHolder extends RecyclerView.ViewHolder {
             public TextView textView_message;
             public LinearLayout linearLayout_chatbot;
