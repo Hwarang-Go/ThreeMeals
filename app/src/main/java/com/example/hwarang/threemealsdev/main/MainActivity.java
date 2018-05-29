@@ -172,9 +172,9 @@ public class MainActivity extends AppCompatActivity {
             Log.d("Is first Time?","yes first");
 
             //TODO 나중에 주석 해제해야 최초 실행 이후에는 팝업창이 뜨지 않음.
-            /*SharedPreferences.Editor editor = sp.edit();
+            SharedPreferences.Editor editor = sp.edit();
             editor.putBoolean("isFirst", true);
-            editor.apply();*/
+            editor.apply();
 
             //TODO 최초 실행 시 나이, 키, 몸무게 입력하라는 팝업 띄울 위치
             startActivity(new Intent(this, FirstPopupActivity.class));
