@@ -69,6 +69,7 @@ public class ChatbotFragment extends Fragment implements AIListener {
     public DietModel dietmodel = new DietModel();
     public ChatModel chatmodel = new ChatModel();
     public infoModel infoModel = new infoModel();
+    public List<String> food_list = new ArrayList<>();
 
     AIService aiService;    //dialogflow 자연어음성처리
     AIDataService aiDataService;    //dialogflow 채팅처리
@@ -146,15 +147,14 @@ public class ChatbotFragment extends Fragment implements AIListener {
             }
         }
         else {
-            if(Integer.parseInt(simpleDateFormat.format(date).substring(11,13))!=dateorder.getInt("dateorder",0))
-            {
-                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-                chatmodel.time = simpleDateFormat.format(date);
-                chatmodel.user = false;
-                chatmodel.message = "안녕하세요! 드신음식을 1개씩 말씀해주세요";
-                FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);  // 매세지에 대한 반응을 chatDB에 넣음
-            }
+    // todo 시작 알려주기 계속 반복
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        chatmodel.time = simpleDateFormat.format(date);
+        chatmodel.user = false;
+        chatmodel.message = "안녕하세요! 드신음식을 1개씩 말씀해주세요";
+        FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);  // 매세지에 대한 반응을 chatDB에 넣음
         }
+
         chatRoom(); //채팅내용 채팅창에 출력
         ButterKnife.bind(this, view);
 
@@ -183,7 +183,6 @@ public class ChatbotFragment extends Fragment implements AIListener {
     }
     @Override
     public void onListeningStarted() {
-        message.setText("asdf");
     }
     @Override
     public void onListeningCanceled() {
@@ -198,12 +197,13 @@ public class ChatbotFragment extends Fragment implements AIListener {
 
         Result result = response.getResult();
 
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
 
             dietmodel.food = result.getStringParameter("foodname");
             dietmodel.End = result.getStringParameter("End");
             dietmodel.query = result.getResolvedQuery();
             dietmodel.time = simpleDateFormat.format(date);
+
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
 
             int date_int = Integer.parseInt(simpleDateFormat.format(date).substring(11,13));    //현재시 저장
 
@@ -242,12 +242,12 @@ public class ChatbotFragment extends Fragment implements AIListener {
             editordate.commit();
 
             dietmodel.date_order = dateorder.getInt("dateorder",0);
-            if(dietmodel.End.equals("true")){
+
+            if(result.getFulfillment().getSpeech().equals("retry")||dietmodel.query.equals("welcome")) {}  // 이상한 말이 아니고 끝이면 식단에 입력 안함
+            else if(dietmodel.End.equals("true")){
                 editor.remove("dateorder");
                 editor.commit();
             }
-
-            if(result.getFulfillment().getSpeech().equals("retry")||dietmodel.End.equals("true")||dietmodel.food.equals("welcome")) {}  // 이상한 말이 아니고 끝이면 식단에 입력 안함
             else {
                 ValueEventListener nutirentListener = new ValueEventListener() { //음식 info 불러와서 넣기
                     @Override
@@ -266,8 +266,11 @@ public class ChatbotFragment extends Fragment implements AIListener {
                         dietmodel.vitaminB = infoModel.vitaminB;
                         dietmodel.vitaminC = infoModel.vitaminC;
 
-                        FirebaseDatabase.getInstance().getReference().child(uid).child("Diet").child(datetime.getString("datetime",""))
-                                .push().setValue(dietmodel);
+                        if (dietmodel.foodAmount != 0) {
+                            food_list.add(dietmodel.food);
+                            FirebaseDatabase.getInstance().getReference().child(uid).child("Diet").child(datetime.getString("datetime", ""))
+                                    .push().setValue(dietmodel);
+                        }
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -290,6 +293,9 @@ public class ChatbotFragment extends Fragment implements AIListener {
             chatmodel.message = result.getFulfillment().getSpeech();
             if(chatmodel.message.equals("retry")){
                 chatmodel.message = "무슨 말씀인지 이해하지 못했습니다. 다시 말씀해주세요";
+            }
+            else if(dietmodel.End.equals("true")){
+                chatmodel.message = food_list.toString().substring(1,food_list.toString().length()-1)+" 입력되었습니다.";
             }
             FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);  // 매세지에 대한 반응을 chatDB에 넣음
 
