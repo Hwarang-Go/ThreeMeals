@@ -1,5 +1,6 @@
 package com.example.hwarang.threemealsdev.main;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -92,6 +94,52 @@ public class MainActivity extends AppCompatActivity {
                 userData.userPhoto = mFirebaseUser.getPhotoUrl().toString();
             }
             //TODO 로그인된 사용자의 정보를 객체에 넣어줄 부분
+            sp = getSharedPreferences("isFirst", MODE_PRIVATE);
+            boolean first = sp.getBoolean("isFirst", false);
+            Log.d("sp set", "set sp false");
+            if(!first){
+                Log.d("Is first Time?","yes first");
+
+                //나중에 주석 해제해야 최초 실행 이후에는 팝업창이 뜨지 않음.
+                /*SharedPreferences.Editor editor = sp.edit();
+                editor.putBoolean("isFirst", true);
+                editor.apply();*/
+
+                //최초 실행 시 나이, 키, 몸무게 입력하라는 팝업 띄울 위치
+                //startActivity(new Intent(this, FirstPopupActivity.class));
+                // 다이일로그 바디
+                Log.d("alert test","start1");
+                AlertDialog.Builder alert_confirm = new AlertDialog.Builder(this);
+                Log.d("alert test","start2");
+                //메세지
+                alert_confirm.setMessage("사용자 정보를 입력해야 합니다");
+                // 확인 버튼 리스너
+                Log.d("alert test","start3");
+                alert_confirm.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.d("alert test","start4");
+                        Intent i = new Intent(MainActivity.this, FirstPopupActivity.class);
+                        startActivity(i);
+                    }
+                });
+                Log.d("alert test","start5");
+                // 다이얼로그 생성
+                AlertDialog alert = alert_confirm.create();
+                Log.d("alert test","start6");
+                // 아이콘
+                // TODO 나중에 아이콘 변경해줘야함
+                alert.setIcon(R.drawable.ic_audiotrack_dark);
+                Log.d("alert test","start7");
+                // 다이얼로그 타이틀
+                alert.setTitle("처음 오셨군요!");
+                Log.d("alert test","start8");
+                // 다이얼로그 띄우기
+                alert.show();
+                Log.d("alert test","start9");
+            }else{
+                Log.d("Is first Time?","not first");
+            }
         }
 
 
@@ -165,22 +213,7 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.main_fragment_container, HomeFragment.getInstance());
         transaction.commit();
 
-        sp = getSharedPreferences("isFirst", MODE_PRIVATE);
-        boolean first = sp.getBoolean("isFirst", false);
-        Log.d("sp set", "set sp false");
-        if(!first){
-            Log.d("Is first Time?","yes first");
 
-            //TODO 나중에 주석 해제해야 최초 실행 이후에는 팝업창이 뜨지 않음.
-            /*SharedPreferences.Editor editor = sp.edit();
-            editor.putBoolean("isFirst", true);
-            editor.apply();*/
-
-            //TODO 최초 실행 시 나이, 키, 몸무게 입력하라는 팝업 띄울 위치
-            startActivity(new Intent(this, FirstPopupActivity.class));
-        }else{
-            Log.d("Is first Time?","not first");
-        }
 
     }
 
