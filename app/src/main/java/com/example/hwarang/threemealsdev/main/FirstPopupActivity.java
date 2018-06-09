@@ -156,30 +156,10 @@ public class FirstPopupActivity extends Activity {
         edtTall = (EditText)findViewById(R.id.edit_text_tall);
         edtWeight = (EditText)findViewById(R.id.edit_text_weight);
 
-        //TODO TextInputLayout 사용할 때 쓸 듯, 버터나이프로 바인딩 하면 없앨 것들
-        /*ageLayout = (TextInputLayout)findViewById(R.id.text_input_layout1);
-        tallLayout = (TextInputLayout)findViewById(R.id.text_input_layout2);
-        weightLayout = (TextInputLayout)findViewById(R.id.text_input_layout3);
-*/
         imageButtonMor = (ImageButton)findViewById(R.id.img_time_morning);
         imageButtonMor.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //Toast.makeText(getApplicationContext(), "morning click", Toast.LENGTH_LONG).show();
-
-                /*NotificationManager notiManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
-                Intent intent = new Intent(FirstPopupActivity.this, MainActivity.class);
-                PendingIntent pIntent = PendingIntent.getActivity(FirstPopupActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-                Notification.Builder builder = new Notification.Builder(FirstPopupActivity.this);
-                builder.setSmallIcon(R.drawable.ic_mom)
-                        .setTicker("식사 알리미")
-                        .setContentTitle("철수야 밥먹자~!")
-                        .setContentText("식사는 하셨나요? 식단을 등록해주세요!")
-                        .setWhen(System.currentTimeMillis());
-                        builder.setContentIntent(pIntent)
-                                .setAutoCancel(true)
-                                .setNumber(999);
-                notiManager.notify(0,builder.build());*/
 
                 Calendar calendar1 = Calendar.getInstance();
                 morHour = calendar1.get(Calendar.HOUR_OF_DAY);
@@ -229,6 +209,14 @@ public class FirstPopupActivity extends Activity {
         //setResult(RESULT_OK, intent);
 
         //TODO 현재 빈칸으로 제출 시 에러나는 경우 발견함, 추후에 머터리얼 디자인으로 구성하면서 수정해야함.
+
+        if(edtAge.getText().toString().length() <= 0
+                || edtTall.getText().toString().length() <= 0
+                || edtWeight.getText().toString().length() <= 0){
+            Toast.makeText(this,"정보를 입력해주세요!",Toast.LENGTH_LONG).show();
+        }else{
+
+
 
         userAge = Long.parseLong(edtAge.getText().toString());
         userHeight = Double.parseDouble(edtTall.getText().toString());
@@ -498,6 +486,7 @@ public class FirstPopupActivity extends Activity {
                 userIron, userNatrium, userVitaminA, userVitaminB, userVitaminC);
         //액티비티(팝업) 닫기
         finish();
+        }
     }
 
     @Override
@@ -515,7 +504,6 @@ public class FirstPopupActivity extends Activity {
         return;
     }
 
-    //TODO ', Double[] userNutrient' 나중에 파라미터에 추가
     private void writeNewUser(String userId, String userName, String email, Long userAge, Double userHeight,
                               Double userWeight, Double stdWeight, Double userCalorie, Boolean userGender,
                               Double userPhysical, double userCarbo, double userProtein,
