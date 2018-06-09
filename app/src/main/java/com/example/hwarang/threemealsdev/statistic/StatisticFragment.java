@@ -57,7 +57,8 @@ public class StatisticFragment extends ListFragment {
         ButterKnife.bind(this, view);
 
         radarChart = (RadarChart)view.findViewById(R.id.chart);
-        radarChart.setBackgroundColor(Color.rgb(255, 255, 255));
+        //radarChart.setBackgroundColor(Color.rgb(255, 255, 255));
+        radarChart.setBackgroundResource(R.drawable.edge_draw);
         radarChart.getDescription().setEnabled(false);
         radarChart.setWebLineWidth(1f);
         radarChart.setWebColor(Color.LTGRAY);
@@ -73,7 +74,7 @@ public class StatisticFragment extends ListFragment {
                 Easing.EasingOption.EaseInOutQuad);
 
         XAxis xAxis = radarChart.getXAxis();
-        xAxis.setTextSize(9f);
+        xAxis.setTextSize(14f);
         xAxis.setYOffset(0f);
         xAxis.setXOffset(0f);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
@@ -98,9 +99,11 @@ public class StatisticFragment extends ListFragment {
         lgd.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
         lgd.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         lgd.setDrawInside(true);
-        lgd.setXEntrySpace(7f);
+        lgd.setXEntrySpace(12f);
         lgd.setYEntrySpace(5f);
+        lgd.setXOffset(-18f);
         lgd.setTextColor(Color.rgb(50,100,100));
+        lgd.setTextSize(12f);
         radarChart.setRotationEnabled(false);
 
 
@@ -143,19 +146,19 @@ public class StatisticFragment extends ListFragment {
             //entries1.add(new RadarEntry(result.get(i)*20));
         }
 
-        RadarDataSet set1 = new RadarDataSet(entries1,"권장량");
-        set1.setColor(Color.rgb(248,182,82));
-        set1.setFillColor(Color.rgb(255,255,255));
+        RadarDataSet set1 = new RadarDataSet(entries1,"섭취량");
+        set1.setColor(Color.rgb(50, 151, 151));
+        set1.setFillColor(Color.rgb(120, 183, 183));
         set1.setDrawFilled(true);
         set1.setFillAlpha(180);
         set1.setLineWidth(2f);
         set1.setDrawHighlightCircleEnabled(true);
         set1.setDrawHighlightIndicators(false);
 
-        RadarDataSet set2 = new RadarDataSet(entries2, "섭취량");
-        set2.setColor(Color.rgb(50, 151, 151));
-        set2.setFillColor(Color.rgb(120, 183, 183));
-        set2.setDrawFilled(true);
+        RadarDataSet set2 = new RadarDataSet(entries2, "권장량");
+        set2.setColor(Color.rgb(248,182,82));
+        set2.setFillColor(Color.rgb(255,255,255));
+        set2.setDrawFilled(false);
         set2.setFillAlpha(180);
         set2.setLineWidth(2f);
         set2.setDrawHighlightCircleEnabled(true);

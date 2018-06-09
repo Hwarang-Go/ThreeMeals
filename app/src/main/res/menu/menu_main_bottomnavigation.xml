@@ -3,17 +3,18 @@
 
     <item
         android:id="@+id/main_bottomnavigation_home"
-        android:icon="@drawable/ic_audiotrack_dark"
-        android:title="home" />
+        android:icon="@drawable/bnic_main"
+
+        android:title="HOME" />
 
     <item
         android:id="@+id/main_bottomnavigation_chatbot"
-        android:icon="@drawable/ic_audiotrack_dark"
-        android:title="chatbot" />
+        android:icon="@drawable/bnic_chat"
+        android:title="CHAT" />
 
     <item
         android:id="@+id/main_bottomnavigation_statistic"
-        android:icon="@drawable/ic_audiotrack_dark"
-        android:title="statistic" />
+        android:icon="@drawable/bnic_stat"
+        android:title="STAT" />
 
 </menu>

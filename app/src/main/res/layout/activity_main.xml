@@ -44,10 +44,10 @@
             android:id="@+id/main_bottomnavigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/mainColor"
-            app:itemBackground="@color/mainColor"
-            app:itemIconTint="@color/colorPrimary"
-            app:itemTextColor="@color/colorAccent"
+            android:background="@color/white"
+            app:itemBackground="@color/white"
+            app:itemIconTint="@color/font"
+            app:itemTextColor="@color/font"
             app:layout_anchor="@id/main_fragment_container"
             app:layout_anchorGravity="bottom"
             app:layout_behavior=""
@@ -68,3 +68,5 @@
     </android.support.design.widget.NavigationView>
 
 </android.support.v4.widget.DrawerLayout>
+
+<!--app:itemIconTint="@color/colorPrimary"-->

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ThreeMeals</string>
+    <string name="app_name">철수야 밥먹자</string>
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->

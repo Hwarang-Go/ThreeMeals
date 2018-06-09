@@ -8,11 +8,6 @@
             android:icon="@drawable/ic_nav_signout"
             app:showAsAction="never"/>
         <item
-            android:id="@+id/menu_nav_dish_time"
-            android:title="식사 시간 설정"
-            android:icon="@drawable/cube"
-            app:showAsAction="never"/>
-        <item
             android:id="@+id/menu_nav_signout"
             android:title="로그아웃"
             android:icon="@drawable/ic_nav_signout"

@@ -4,154 +4,190 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <!-- 타이틀바 -->
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:text="Notice"
-                android:textSize="20sp"
-                android:textColor="#fff"
-                android:gravity="center"
-                android:background="@color/mainColor"
-                android:layout_width="match_parent"
-                android:layout_height="53dp" />
-        </LinearLayout>
-        <!-- //end 타이틀바 -->
-
-        <!-- Notice -->
-        <LinearLayout
-            android:padding="24dp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:id="@+id/txtText"
-                android:textSize="15sp"
-                android:textColor="#000"
-                android:alpha="0.87"
-                android:gravity="center"
-                android:layout_marginBottom="3dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="정보를 입력해주세요"/>
-        </LinearLayout>
-        <!-- Notice -->
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_weight="1">
 
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/edit_text_age"
-                    android:hint="나이를 입력해주세요"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/edit_text_tall"
-                    android:hint="키를 입력해주세요(cm단위)"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-            <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <android.support.design.widget.TextInputEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/edit_text_weight"
-                    android:hint="몸무게를 입력해주세요"/>
-
-            </android.support.design.widget.TextInputLayout>
-
-
-
-            <Spinner
-                android:id="@+id/txt_question_gender"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right">
-
-            </Spinner>
-
-            <Spinner
-                android:id="@+id/txt_question_physical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="right">
-
-            </Spinner>
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/img_time_morning"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <!-- 타이틀바 -->
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:text="Notice"
+                        android:textSize="20sp"
+                        android:textColor="#fff"
+                        android:gravity="center"
+                        android:background="@color/mainColor"
+                        android:layout_width="match_parent"
+                        android:layout_height="53dp" />
+                </LinearLayout>
+                <!-- //end 타이틀바 -->
+
+                <!-- Notice -->
+                <LinearLayout
+                    android:padding="24dp"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/txtText"
+                        android:textSize="15sp"
+                        android:textColor="#000"
+                        android:alpha="0.87"
+                        android:gravity="center"
+                        android:layout_marginBottom="3dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="정보를 입력해주세요"/>
+                </LinearLayout>
+                <!-- Notice -->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:src="@drawable/bot"/>
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/img_time_lunch"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/edit_text_age"
+                            android:inputType="numberDecimal|numberSigned"
+                            android:hint="나이를 입력해주세요"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/edit_text_tall"
+                            android:hint="키를 입력해주세요(cm단위)"
+                            android:inputType="numberDecimal|numberSigned"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+                    <android.support.design.widget.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp">
+
+                        <android.support.design.widget.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/edit_text_weight"
+                            android:inputType="numberDecimal|numberSigned"
+                            android:hint="몸무게를 입력해주세요"/>
+
+                    </android.support.design.widget.TextInputLayout>
+
+
+
+                    <Spinner
+                        android:id="@+id/txt_question_gender"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginBottom="3dp">
+
+                    </Spinner>
+
+                    <Spinner
+                        android:id="@+id/txt_question_physical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="right"
+                        android:layout_marginBottom="3dp">
+
+                    </Spinner>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/bot"/>
-                <android.support.v7.widget.AppCompatImageView
-                    android:id="@+id/img_time_dinner"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:src="@drawable/bot"/>
+                    android:layout_marginBottom="15dp">
+                    <android.support.v7.widget.AppCompatTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="#000"
+                        android:alpha="0.87"
+                        android:text="식사 시간 설정"
+                        android:gravity="center"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageButton
+                        android:id="@+id/img_time_morning"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:src="@drawable/img_sunrise"/>
+                    <ImageButton
+                        android:id="@+id/img_time_lunch"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/img_sunny"/>
+                    <ImageButton
+                        android:id="@+id/img_time_dinner"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/img_sunset"/>
+                </LinearLayout>
+
+
+
             </LinearLayout>
-
-        </LinearLayout>
-
-    </LinearLayout>
-
-    <!-- 닫기 버튼 -->
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_gravity="bottom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <Button
-            android:text="확인"
-            android:textSize="15sp"
-            android:textColor="#ff7a00"
-            android:padding="16dp"
-            android:gravity="center"
-            android:background="#00000000"
+        </ScrollView>
+        <!-- 닫기 버튼 -->
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_gravity="bottom"
             android:layout_width="match_parent"
-            android:layout_height="53dp"
-            android:onClick="mOnClose"/>
+            android:layout_height="wrap_content">
+            <Button
+                android:text="확인"
+                android:textSize="15sp"
+                android:textColor="#ff7a00"
+                android:padding="16dp"
+                android:gravity="center"
+                android:background="#00000000"
+                android:layout_width="match_parent"
+                android:layout_height="53dp"
+                android:onClick="mOnClose"/>
+        </LinearLayout>
+        <!--// 닫기 버튼 -->
     </LinearLayout>
-    <!--// 닫기 버튼 -->
 </FrameLayout>
 

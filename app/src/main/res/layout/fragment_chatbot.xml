@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".chatbot.ChatbotFragment">
+    tools:context=".chatbot.ChatbotFragment"
+    android:background="@color/backGray">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,7 +15,11 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/message_recyclerview"
             android:layout_width="match_parent"
-            android:layout_height="370dp"></android.support.v7.widget.RecyclerView>
+            android:layout_height="400dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/edge_draw">
+
+        </android.support.v7.widget.RecyclerView>
 
         <LinearLayout
             android:id="@+id/message_layout"
@@ -30,36 +35,40 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="82dp"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="64dp">
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/edge_draw">
 
             <ImageButton
                 android:id="@+id/listen_button"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginLeft="10dp"
                 android:layout_toLeftOf="@+id/message_text"
-                android:src="@drawable/mic"
-                android:onClick="startmic"/>
+                android:background="#00ff0000"
+                android:scaleType="fitCenter"
+                android:src="@drawable/mic" />
 
             <EditText
                 android:id="@+id/message_text"
-                android:layout_width="209dp"
-                android:layout_height="80dp"
+                android:layout_width="190dp"
+                android:layout_height="60dp"
                 android:layout_alignTop="@+id/listen_button"
+                android:layout_marginLeft="5dp"
                 android:layout_toRightOf="@+id/listen_button"
                 android:textSize="15sp" />
 
             <Button
                 android:id="@+id/send_button"
-                android:layout_width="100dp"
-                android:layout_height="80dp"
+                android:layout_width="80dp"
+                android:layout_height="50dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginBottom="64dp"
+                android:layout_marginLeft="5dp"
                 android:text="전송"
-                android:textSize="35dp" />
+                android:textSize="20dp" />
         </LinearLayout>
     </RelativeLayout>
     </FrameLayout>
