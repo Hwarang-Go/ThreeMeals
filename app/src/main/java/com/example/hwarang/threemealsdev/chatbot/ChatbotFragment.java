@@ -65,6 +65,7 @@ public class ChatbotFragment extends Fragment implements AIListener {
     private RecyclerView recyclerView;  //채팅창
     private String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private SharedPreferences dateorder;
+    private SharedPreferences welcomeflag;
     private SharedPreferences datetime;
     private long unixtime = System.currentTimeMillis();
     private Date date = new Date(unixtime);
@@ -131,10 +132,10 @@ public class ChatbotFragment extends Fragment implements AIListener {
             }
         });
 
-        dateorder = getActivity().getSharedPreferences("dateorder", MODE_PRIVATE);
+        welcomeflag = getActivity().getSharedPreferences("welcomeflag", MODE_PRIVATE);
         datetime = getActivity().getSharedPreferences("datetime", MODE_PRIVATE);
 
-        if (datetime.getString("datetime", "").equals("")) { //처음실행시 welcome 실행
+        if (welcomeflag.getInt("welcomeflag",0)==0) { //처음실행시 welcome 실행
             FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").setValue(null);
             AIRequest aiRequest = new AIRequest();
             aiRequest.setQuery("welcome");
@@ -145,36 +146,26 @@ public class ChatbotFragment extends Fragment implements AIListener {
                 e.printStackTrace();
             }
         } else {
-            SharedPreferences.Editor editor = dateorder.edit();
+            SharedPreferences.Editor editor_flag = welcomeflag.edit();
             int date_int = Integer.parseInt(simpleDateFormat.format(date).substring(11, 13));
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
             chatmodel.time = simpleDateFormat.format(date);
             chatmodel.user = false;
-            chatmodel.message = "안녕하세요! 드신음식을 1개씩 말씀해주세요";
-
+            chatmodel.message = "안녕하세요! 1개씩 식단입력을 해주시거나 지난 날짜의 식단을 물어보세요.";
+            int k = welcomeflag.getInt("welcomeflag",0);
             if (5 <= date_int && date_int < 11) {   //아침
-                if (dateorder.getInt("dateorder", 0) == 1) {
-                } else {
-                    FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
-                    editor.remove("dateorder");
-                    editor.putInt("dateorder", 1);
-                }
+                editor_flag.putInt("welcomeflag", 1);
             } else if (11 <= date_int && date_int < 16) {   //점심
-                if (dateorder.getInt("dateorder", 0) == 2) {
-                } else {
-                    FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
-                    editor.remove("dateorder");
-                    editor.putInt("dateorder", 2);
-                }
+                editor_flag.putInt("welcomeflag", 2);
             } else {
-                if (dateorder.getInt("dateorder", 0) == 3) {
-                } else {
-                    FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
-                    editor.remove("dateorder");
-                    editor.putInt("dateorder", 3);
-                }
+                editor_flag.putInt("welcomeflag", 3);
             }
-            editor.commit();
+            editor_flag.commit();
+
+            if (k!=welcomeflag.getInt("welcomeflag", 0)) {
+                FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
+            }
+
         }
         chatRoom(); //채팅내용 채팅창에 출력
         ButterKnife.bind(this, view);
@@ -235,13 +226,11 @@ public class ChatbotFragment extends Fragment implements AIListener {
         SharedPreferences.Editor editor = dateorder.edit();
         SharedPreferences.Editor editordate = datetime.edit();
 
-        Log.i(TAG, "check 2 time: [" + result.getStringParameter("date-time") + "]");
         if(!result.getResolvedQuery().equals("welcome")) {
             if (dateorder.getInt("dateorder", 0) == 0) {
                 if (result.getStringParameter("date-time").equals("")) {
-                    Log.i(TAG, "check : 2");
                     editordate.putString("datetime", simpleDateFormat.format(date).substring(0, 10));
-                    if (5 <= date_int && date_int < 11) {   //아침
+                    if (4 <= date_int && date_int < 11) {   //아침
                         editor.putInt("dateorder", 1);
                     } else if (11 <= date_int && date_int < 16) {   //점심
                         editor.putInt("dateorder", 2);
@@ -249,9 +238,8 @@ public class ChatbotFragment extends Fragment implements AIListener {
                         editor.putInt("dateorder", 3);  //저녁
                 } else {  // 이미 지난 시간의 식단 입력시 그 식단에 입력
                     int date_int2 = Integer.parseInt(result.getStringParameter("date-time").substring(11, 13));
-                    Log.i(TAG, "check : 3");
                     editordate.putString("datetime", result.getStringParameter("date-time").replace("2019", "2018").substring(0, 10));
-                    if (5 <= date_int2 && date_int2 < 11) {
+                    if (4 <= date_int2 && date_int2 < 11) {
                         editor.putInt("dateorder", 1);
                     } else if (11 <= date_int2 && date_int2 < 16) {
                         editor.putInt("dateorder", 2);
@@ -264,12 +252,37 @@ public class ChatbotFragment extends Fragment implements AIListener {
         }
         editor.commit();
         editordate.commit();
-        Log.i(TAG, "check dateoder : " + dateorder.getInt("dateorder", 0));
-        Log.i(TAG, "check time : " + datetime.getString("datetime", ""));
-
         dietmodel.date_order = dateorder.getInt("dateorder", 0);
 
-        if (!result.getStringParameter("check").equals("true")) {
+        if(result.getStringParameter("howtouse").equals("true")){
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+
+            chatmodel.time = simpleDateFormat.format(date);
+            chatmodel.user = true;
+            chatmodel.message = result.getResolvedQuery();
+            FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
+
+            chatmodel.time = simpleDateFormat.format(date);
+            chatmodel.user = false;
+            chatmodel.message = result.getFulfillment().getSpeech();
+            FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
+
+            chatmodel.time = simpleDateFormat.format(date);
+            chatmodel.message = "안녕하세요! 1개씩 식단입력을 해주시거나 지난 날짜의 식단을 물어보세요.";
+            FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
+
+            SharedPreferences.Editor editor_flag = welcomeflag.edit();
+            if (5 <= date_int && date_int < 11) {   //아침
+                editor_flag.putInt("welcomeflag", 1);
+            } else if (11 <= date_int && date_int < 16) {   //점심
+                editor_flag.putInt("welcomeflag", 2);
+            } else {
+                editor_flag.putInt("welcomeflag", 3);
+            }
+            editor_flag.commit();
+        }
+
+        else if (!result.getStringParameter("check").equals("true")) {
             if (result.getFulfillment().getSpeech().equals("retry") || dietmodel.End.equals("true") || dietmodel.food.equals("welcome")) {
             }  // 이상한 말이 아니고 끝이면 식단에 입력 안함
             else {
@@ -318,7 +331,7 @@ public class ChatbotFragment extends Fragment implements AIListener {
             } else if (dietmodel.End.equals("true")) {
                 editor.putInt("dateorder", 0);
                 editor.commit();
-                chatmodel.message = food_list.toString().substring(1, food_list.toString().length() - 1) + " 입력되었습니다.";
+                chatmodel.message = datetime.getString("datetime", "")+"에 "+food_list.toString().substring(1, food_list.toString().length() - 1) + " 입력되었습니다.";
                 food_list.clear();
             } else {
                 if (result.getFulfillment().getSpeech().equals(""))
@@ -335,8 +348,6 @@ public class ChatbotFragment extends Fragment implements AIListener {
             SharedPreferences.Editor editor2 = datetime.edit();
             editor2.putString("datetime", result.getStringParameter("date-time").replace("2019", "2018").substring(0, 10));
             editor2.commit();
-
-            Log.i(TAG, "check 3 time: [" + result.getStringParameter("date-time") + "]");
 
             chatmodel.user = true;
             chatmodel.message = dietmodel.query;
@@ -509,18 +520,17 @@ public class ChatbotFragment extends Fragment implements AIListener {
             // 내 메세지
             if (messages.get(position).user) {
                 messageViewHolder.textView_message.setText(messages.get(position).message);
-                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chatuser2);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chatbot3);
                 messageViewHolder.linearLayout_chatbot.setVisibility(View.INVISIBLE);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
             }
             // 챗봇 메세지
             else {
                 messageViewHolder.textView_message.setText(messages.get(position).message);
-                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chatbot2);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chatbot3);
                 messageViewHolder.linearLayout_chatbot.setVisibility(View.VISIBLE);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);
             }
-
         }
 
         @Override
