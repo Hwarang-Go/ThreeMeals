@@ -54,24 +54,25 @@ import static android.content.Context.MODE_PRIVATE;
  * A simple {@link Fragment} subclass.
  */
 public class ChatbotFragment extends Fragment implements AIListener {
+    public DietModel dietmodel = new DietModel();
+    public ChatModel chatmodel = new ChatModel();
+    public infoModel infoModel = new infoModel();
+    List<String> food_list = new ArrayList<String>();
+    AIService aiService;    //dialogflow 자연어음성처리
+    AIDataService aiDataService;    //dialogflow 채팅처리
     private EditText message;   //메세지 입력칸
     private Button send_button; //전송버튼
     private ImageButton listen_button;  //마이크버튼
     private RecyclerView recyclerView;  //채팅창
     private String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private SharedPreferences dateorder;
+    private SharedPreferences welcomeflag;
     private SharedPreferences datetime;
 
     private long unixtime = System.currentTimeMillis();
     private Date date = new Date(unixtime);
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm"); //a =am/pm, EEE=day ,,, 메세지 시간
 
-    public DietModel dietmodel = new DietModel();
-    public ChatModel chatmodel = new ChatModel();
-    public infoModel infoModel = new infoModel();
-
-    AIService aiService;    //dialogflow 자연어음성처리
-    AIDataService aiDataService;    //dialogflow 채팅처리
     public ChatbotFragment() {
         // Required empty public constructor
     }
@@ -133,9 +134,11 @@ public class ChatbotFragment extends Fragment implements AIListener {
             }
         });
 
+        welcomeflag = getActivity().getSharedPreferences("welcomeflag", MODE_PRIVATE);
+        datetime = getActivity().getSharedPreferences("datetime", MODE_PRIVATE);
 
-        dateorder = getActivity().getSharedPreferences("datedorder", MODE_PRIVATE);
-        if(dateorder.getInt("dateorder",0)==0) { //처음실행시 welcome 실행
+        if (welcomeflag.getInt("welcomeflag",0)==0) { //처음실행시 welcome 실행
+            FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").setValue(null);
             AIRequest aiRequest = new AIRequest();
             aiRequest.setQuery("welcome");
             try {
@@ -144,16 +147,27 @@ public class ChatbotFragment extends Fragment implements AIListener {
             } catch (AIServiceException e) {
                 e.printStackTrace();
             }
-        }
-        else {
-            if(Integer.parseInt(simpleDateFormat.format(date).substring(11,13))!=dateorder.getInt("dateorder",0))
-            {
-                simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
-                chatmodel.time = simpleDateFormat.format(date);
-                chatmodel.user = false;
-                chatmodel.message = "안녕하세요! 드신음식을 1개씩 말씀해주세요";
-                FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);  // 매세지에 대한 반응을 chatDB에 넣음
+        } else {
+            SharedPreferences.Editor editor_flag = welcomeflag.edit();
+            int date_int = Integer.parseInt(simpleDateFormat.format(date).substring(11, 13));
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+            chatmodel.time = simpleDateFormat.format(date);
+            chatmodel.user = false;
+            chatmodel.message = "안녕하세요! 1개씩 식단입력을 해주시거나 지난 날짜의 식단을 물어보세요.";
+            int k = welcomeflag.getInt("welcomeflag",0);
+            if (5 <= date_int && date_int < 11) {   //아침
+                editor_flag.putInt("welcomeflag", 1);
+            } else if (11 <= date_int && date_int < 16) {   //점심
+                editor_flag.putInt("welcomeflag", 2);
+            } else {
+                editor_flag.putInt("welcomeflag", 3);
             }
+            editor_flag.commit();
+
+            if (k!=welcomeflag.getInt("welcomeflag", 0)) {
+                FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
+            }
+
         }
         chatRoom(); //채팅내용 채팅창에 출력
         ButterKnife.bind(this, view);
@@ -199,55 +213,77 @@ public class ChatbotFragment extends Fragment implements AIListener {
         Result result = response.getResult();
 
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        dietmodel.food = result.getStringParameter("foodname");
+        dietmodel.End = result.getStringParameter("End");
+        dietmodel.query = result.getResolvedQuery();
+        dietmodel.time = simpleDateFormat.format(date);
 
-            dietmodel.food = result.getStringParameter("foodname");
-            dietmodel.End = result.getStringParameter("End");
-            dietmodel.query = result.getResolvedQuery();
-            dietmodel.time = simpleDateFormat.format(date);
+        //현재시 계산을 통한 시간대
+        int date_int = Integer.parseInt(simpleDateFormat.format(date).substring(11, 13));    //현재시 저장
+        dateorder = getActivity().getSharedPreferences("dateorder", MODE_PRIVATE);
+        datetime = getActivity().getSharedPreferences("datetime", MODE_PRIVATE);
+        SharedPreferences.Editor editor = dateorder.edit();
+        SharedPreferences.Editor editordate = datetime.edit();
 
-            int date_int = Integer.parseInt(simpleDateFormat.format(date).substring(11,13));    //현재시 저장
-
-            dateorder = getActivity().getSharedPreferences("datedorder", MODE_PRIVATE);
-            SharedPreferences.Editor editor = dateorder.edit();
-            datetime = getActivity().getSharedPreferences("datetime", MODE_PRIVATE);
-            final SharedPreferences.Editor editordate = datetime.edit();
-            datetime.getString("datetime","");
-
-            //현재시 계산을 통한 시간대
-            int k = dateorder.getInt("dateorder",0);
-            if(k == 0) {
-                editor.remove("dateorder");
+        if(!result.getResolvedQuery().equals("welcome")) {
+            if (dateorder.getInt("dateorder", 0) == 0) {
                 if (result.getStringParameter("date-time").equals("")) {
-                    editordate.putString("datetime",simpleDateFormat.format(date).substring(0,10));
-                    if (5 <= date_int && date_int < 11) {   //아침
+                    editordate.putString("datetime", simpleDateFormat.format(date).substring(0, 10));
+                    if (4 <= date_int && date_int < 11) {   //아침
                         editor.putInt("dateorder", 1);
                     } else if (11 <= date_int && date_int < 16) {   //점심
                         editor.putInt("dateorder", 2);
                     } else
                         editor.putInt("dateorder", 3);  //저녁
-                }
-                else {  // 이미 지난 시간의 식단 입력시 그 식단에 입력
-                    int date_int2 = Integer.parseInt(result.getStringParameter("date-time").substring(11,13));
-                    editordate.putString("datetime",result.getStringParameter("date-time").replace("2019","2018").substring(0,10));
-
-                    if (5 <= date_int2 && date_int2 < 11) {
+                } else {  // 이미 지난 시간의 식단 입력시 그 식단에 입력
+                    int date_int2 = Integer.parseInt(result.getStringParameter("date-time").substring(11, 13));
+                    editordate.putString("datetime", result.getStringParameter("date-time").replace("2019", "2018").substring(0, 10));
+                    if (4 <= date_int2 && date_int2 < 11) {
                         editor.putInt("dateorder", 1);
                     } else if (11 <= date_int2 && date_int2 < 16) {
                         editor.putInt("dateorder", 2);
-                    } else
+                    } else {
                         editor.putInt("dateorder", 3);
+                        chatmodel.message = result.getFulfillment().getSpeech();
+                    }
                 }
             }
-            editor.commit();
-            editordate.commit();
+        }
+        editor.commit();
+        editordate.commit();
+        dietmodel.date_order = dateorder.getInt("dateorder", 0);
 
-            dietmodel.date_order = dateorder.getInt("dateorder",0);
-            if(dietmodel.End.equals("true")){
-                editor.remove("dateorder");
-                editor.commit();
+        if(result.getStringParameter("howtouse").equals("true")){
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+
+            chatmodel.time = simpleDateFormat.format(date);
+            chatmodel.user = true;
+            chatmodel.message = result.getResolvedQuery();
+            FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
+
+            chatmodel.time = simpleDateFormat.format(date);
+            chatmodel.user = false;
+            chatmodel.message = result.getFulfillment().getSpeech();
+            FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
+
+            chatmodel.time = simpleDateFormat.format(date);
+            chatmodel.message = "안녕하세요! 1개씩 식단입력을 해주시거나 지난 날짜의 식단을 물어보세요.";
+            FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
+
+            SharedPreferences.Editor editor_flag = welcomeflag.edit();
+            if (5 <= date_int && date_int < 11) {   //아침
+                editor_flag.putInt("welcomeflag", 1);
+            } else if (11 <= date_int && date_int < 16) {   //점심
+                editor_flag.putInt("welcomeflag", 2);
+            } else {
+                editor_flag.putInt("welcomeflag", 3);
             }
+            editor_flag.commit();
+        }
 
-            if(result.getFulfillment().getSpeech().equals("retry")||dietmodel.End.equals("true")||dietmodel.food.equals("welcome")) {}  // 이상한 말이 아니고 끝이면 식단에 입력 안함
+        else if (!result.getStringParameter("check").equals("true")) {
+            if (result.getFulfillment().getSpeech().equals("retry") || dietmodel.End.equals("true") || dietmodel.food.equals("welcome")) {
+            }  // 이상한 말이 아니고 끝이면 식단에 입력 안함
             else {
                 ValueEventListener nutirentListener = new ValueEventListener() { //음식 info 불러와서 넣기
                     @Override
@@ -265,9 +301,11 @@ public class ChatbotFragment extends Fragment implements AIListener {
                         dietmodel.vitaminA = infoModel.vitaminA;
                         dietmodel.vitaminB = infoModel.vitaminB;
                         dietmodel.vitaminC = infoModel.vitaminC;
-
-                        FirebaseDatabase.getInstance().getReference().child(uid).child("Diet").child(datetime.getString("datetime",""))
-                                .push().setValue(dietmodel);
+                        if (dietmodel.foodAmount != 0) {
+                            food_list.add(dietmodel.food);
+                            FirebaseDatabase.getInstance().getReference().child(uid).child("Diet").child(datetime.getString("datetime", ""))
+                                    .push().setValue(dietmodel);
+                        }
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -276,24 +314,156 @@ public class ChatbotFragment extends Fragment implements AIListener {
                         // ...
                     }
                 };
-
-                FirebaseDatabase.getInstance().getReference().child("info").child(dietmodel.food).addValueEventListener(nutirentListener);
-
+                FirebaseDatabase.getInstance().getReference().child("info").child(dietmodel.food).addListenerForSingleValueEvent(nutirentListener);
             }
 
             chatmodel.user = true;
             chatmodel.message = dietmodel.query;
             chatmodel.time = simpleDateFormat.format(date);
-            if(!chatmodel.message.equals("welcome"))
+            if (!chatmodel.message.equals("welcome")) {
                 FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel); // 내 메세지를 chatDB에넣음
+            }
             chatmodel.user = false;
-            chatmodel.message = result.getFulfillment().getSpeech();
-            if(chatmodel.message.equals("retry")){
+            if (result.getFulfillment().getSpeech().equals("retry")) {
                 chatmodel.message = "무슨 말씀인지 이해하지 못했습니다. 다시 말씀해주세요";
+            } else if (dietmodel.End.equals("true")) {
+                editor.putInt("dateorder", 0);
+                editor.commit();
+                chatmodel.message = datetime.getString("datetime", "")+"에 "+food_list.toString().substring(1, food_list.toString().length() - 1) + " 입력되었습니다.";
+                food_list.clear();
+            } else {
+                if (result.getFulfillment().getSpeech().equals(""))
+                    chatmodel.message = "무슨 말씀인지 이해하지 못했습니다. 다시 말씀해주세요";
+                else
+                    chatmodel.message = result.getFulfillment().getSpeech();
             }
             FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);  // 매세지에 대한 반응을 chatDB에 넣음
+        }
 
-            chatRoom(); // 채팅창 최신화해서 나타내기
+        //todo 확인
+        else if (result.getStringParameter("check").equals("true")) {
+            datetime = getActivity().getSharedPreferences("datetime", MODE_PRIVATE);
+            SharedPreferences.Editor editor2 = datetime.edit();
+            editor2.putString("datetime", result.getStringParameter("date-time").replace("2019", "2018").substring(0, 10));
+            editor2.commit();
+
+            chatmodel.user = true;
+            chatmodel.message = dietmodel.query;
+            chatmodel.time = simpleDateFormat.format(date);
+            if (!chatmodel.message.equals("welcome"))
+                FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel); // 내 메세지를 chatDB에넣음
+
+            // 날짜 전체 식단
+            if (result.getStringParameter("date-time").length() <= 25) {
+
+                FirebaseDatabase.getInstance().getReference().child(uid).child("Diet").child(datetime.getString("datetime", "")).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        food_list.clear();
+                        for (DataSnapshot item : dataSnapshot.getChildren()) {
+                            if (item.getValue(DietModel.class).foodAmount != 0) {
+                                food_list.add(item.getValue(DietModel.class).food);
+                            }
+                        }
+                        chatmodel.user = false;
+                        if (!food_list.toString().equals("[]")) {
+                            chatmodel.message = datetime.getString("datetime", "") + "에 " + food_list.toString().substring(1, food_list.toString().length() - 1) + " 드셨습니다.";
+                        } else {
+                            chatmodel.message = "드신게 없습니다.";
+                        }
+                        chatmodel.time = simpleDateFormat.format(date);
+                        FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
+                        food_list.clear();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+            }
+
+            //todo 날짜 dateorder 식단
+            else {
+                if (Integer.parseInt(result.getStringParameter("date-time").substring(11, 13)) == 8) {
+                    FirebaseDatabase.getInstance().getReference().child(uid).child("Diet").child(datetime.getString("datetime", "")).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            food_list.clear();
+                            for (DataSnapshot item : dataSnapshot.getChildren()) {
+                                if (item.getValue(DietModel.class).foodAmount != 0 && item.getValue(DietModel.class).date_order == 1) {
+                                    food_list.add(item.getValue(DietModel.class).food);
+                                }
+                            }
+                            chatmodel.user = false;
+                            if (!food_list.toString().equals("[]")) {
+                                chatmodel.message = datetime.getString("datetime", "") + " 아침에 " + food_list.toString().substring(1, food_list.toString().length() - 1) + " 드셨습니다.";
+                            } else {
+                                chatmodel.message = "드신게 없습니다.";
+                            }
+                            chatmodel.time = simpleDateFormat.format(date);
+                            FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
+                            food_list.clear();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                } else if (Integer.parseInt(result.getStringParameter("date-time").substring(11, 13)) == 12) {
+                    FirebaseDatabase.getInstance().getReference().child(uid).child("Diet").child(datetime.getString("datetime", "")).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            food_list.clear();
+                            for (DataSnapshot item : dataSnapshot.getChildren()) {
+                                if (item.getValue(DietModel.class).foodAmount != 0 && item.getValue(DietModel.class).date_order == 2) {
+                                    food_list.add(item.getValue(DietModel.class).food);
+                                }
+                            }
+                            chatmodel.user = false;
+                            if (!food_list.toString().equals("[]")) {
+                                chatmodel.message = datetime.getString("datetime", "") + " 점심에 " + food_list.toString().substring(1, food_list.toString().length() - 1) + " 드셨습니다.";
+                            } else {
+                                chatmodel.message = "드신게 없습니다.";
+                            }
+                            chatmodel.time = simpleDateFormat.format(date);
+                            FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
+                            food_list.clear();
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                } else {
+                    FirebaseDatabase.getInstance().getReference().child(uid).child("Diet").child(datetime.getString("datetime", "")).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            food_list.clear();
+                            for (DataSnapshot item : dataSnapshot.getChildren()) {
+                                if (item.getValue(DietModel.class).foodAmount != 0 && item.getValue(DietModel.class).date_order == 3) {
+                                    food_list.add(item.getValue(DietModel.class).food);
+                                }
+                            }
+                            chatmodel.user = false;
+                            if (!food_list.toString().equals("[]")) {
+                                chatmodel.message = datetime.getString("datetime", "") + " 저녁에 " + food_list.toString().substring(1, food_list.toString().length() - 1) + " 드셨습니다.";
+                            } else {
+                                chatmodel.message = "드신게 없습니다.";
+                            }
+                            chatmodel.time = simpleDateFormat.format(date);
+                            FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
+                            food_list.clear();
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                        }
+                    });
+                }
+            }
+        }
+        chatRoom(); // 채팅창 최신화해서 나타내기
     }
 
     void chatRoom(){
@@ -311,8 +481,7 @@ public class ChatbotFragment extends Fragment implements AIListener {
     }
 
     // item_message -> fragment_chatbot의 recyclerview의 채팅창으로 만듬
-    class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-    {
+    class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         List<ChatModel> messages;
         public RecyclerViewAdapter(){
             messages = new ArrayList<>();
