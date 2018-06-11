@@ -259,7 +259,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 0.6; // 밀리그램
                 userVitaminC = 40;  // 밀리그램
                 userCalcium = 500;  // 밀리그램
-                userNatrium = 0.7;  // 밀리그램
+                userNatrium = 700;  // 밀리그램
                 userIron = 6;   // 밀리그램
             }else if(userAge <= 5){
                 userCarbo = 60;
@@ -269,7 +269,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 0.7;
                 userVitaminC = 40;
                 userCalcium = 600;
-                userNatrium = 0.9;
+                userNatrium = 900;
                 userIron = 7;
             }else if(userAge <= 8){
                 userCarbo = 90;
@@ -279,7 +279,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 0.9;
                 userVitaminC = 60;
                 userCalcium = 700;
-                userNatrium = 1.2;
+                userNatrium = 1200;
                 userIron = 8;
             }else if(userAge <= 11){
                 userCarbo = 90;
@@ -289,7 +289,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.1;
                 userVitaminC = 70;
                 userCalcium = 800;
-                userNatrium = 1.3;
+                userNatrium = 1300;
                 userIron = 11;
             }else if(userAge <= 14){
                 userCarbo = userCalorie*0.6/4;
@@ -299,7 +299,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.5;
                 userVitaminC = 100;
                 userCalcium = 1000;
-                userNatrium = 1.5;
+                userNatrium = 1500;
                 userIron = 14;
             }else if(userAge <= 18){
                 userCarbo = userCalorie*0.6/4;
@@ -309,7 +309,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.7;
                 userVitaminC = 110;
                 userCalcium = 900;
-                userNatrium = 1.5;
+                userNatrium = 1500;
                 userIron = 15;
             }else if(userAge <= 29){
                 userCarbo = userCalorie*0.6/4;
@@ -319,7 +319,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.5;
                 userVitaminC = 100;
                 userCalcium = 750;
-                userNatrium = 1.5;
+                userNatrium = 1500;
                 userIron = 10;
             }else if(userAge <= 49){
                 userCarbo = userCalorie*0.6/4;
@@ -329,7 +329,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.5;
                 userVitaminC = 100;
                 userCalcium = 750;
-                userNatrium = 1.5;
+                userNatrium = 1500;
                 userIron = 10;
             }else if(userAge <= 64){
                 userCarbo = userCalorie*0.6/4;
@@ -339,7 +339,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.5;
                 userVitaminC = 100;
                 userCalcium = 700;
-                userNatrium = 1.4;
+                userNatrium = 1400;
                 userIron = 9;
             }else if(userAge <= 74){
                 userCarbo = userCalorie*0.6/4;
@@ -349,7 +349,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.5;
                 userVitaminC = 100;
                 userCalcium = 700;
-                userNatrium = 1.2;
+                userNatrium = 1200;
                 userIron = 9;
             }else{ // 75이상
                 userCarbo = userCalorie*0.6/4;
@@ -359,7 +359,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.5;
                 userVitaminC = 100;
                 userCalcium = 700;
-                userNatrium = 1.1;
+                userNatrium = 1100;
                 userIron = 9;
             }
         }else{
@@ -373,7 +373,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 0.6; // 밀리그램
                 userVitaminC = 40;  // 밀리그램
                 userCalcium = 500;  // 밀리그램
-                userNatrium = 0.7;  // 밀리그램
+                userNatrium = 700;  // 밀리그램
                 userIron = 6;   // 밀리그램
             }else if(userAge <= 5){
                 userCarbo = 60;
@@ -383,7 +383,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 0.7;
                 userVitaminC = 40;
                 userCalcium = 600;
-                userNatrium = 0.9;
+                userNatrium = 900;
                 userIron = 7;
             }else if(userAge <= 8){
                 userCarbo = 90;
@@ -393,7 +393,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 0.7;
                 userVitaminC = 60;
                 userCalcium = 700;
-                userNatrium = 1.2;
+                userNatrium = 1200;
                 userIron = 8;
             }else if(userAge <= 11){
                 userCarbo = 90;
@@ -403,7 +403,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 0.9;
                 userVitaminC = 80;
                 userCalcium = 800;
-                userNatrium = 1.3;
+                userNatrium = 1300;
                 userIron = 10;
             }else if(userAge <= 14){
                 userCarbo = userCalorie*0.6/4;
@@ -413,7 +413,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.2;
                 userVitaminC = 100;
                 userCalcium = 900;
-                userNatrium = 1.5;
+                userNatrium = 1500;
                 userIron = 13;
             }else if(userAge <= 18){
                 userCarbo = userCalorie*0.6/4;
@@ -423,7 +423,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.2;
                 userVitaminC = 100;
                 userCalcium = 900;
-                userNatrium = 1.5;
+                userNatrium = 1500;
                 userIron = 17;
             }else if(userAge <= 29){
                 userCarbo = userCalorie*0.6/4;
@@ -433,7 +433,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.2;
                 userVitaminC = 100;
                 userCalcium = 750;
-                userNatrium = 1.5;
+                userNatrium = 1500;
                 userIron = 14;
             }else if(userAge <= 49){
                 userCarbo = userCalorie*0.6/4;
@@ -443,7 +443,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.2;
                 userVitaminC = 100;
                 userCalcium = 750;
-                userNatrium = 1.5;
+                userNatrium = 1500;
                 userIron = 14;
             }else if(userAge <= 64){
                 userCarbo = userCalorie*0.6/4;
@@ -453,7 +453,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.2;
                 userVitaminC = 100;
                 userCalcium = 700;
-                userNatrium = 1.4;
+                userNatrium = 1400;
                 userIron = 8;
             }else if(userAge <= 74){
                 userCarbo = userCalorie*0.6/4;
@@ -463,7 +463,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.2;
                 userVitaminC = 100;
                 userCalcium = 700;
-                userNatrium = 1.2;
+                userNatrium = 1200;
                 userIron = 8;
             }else{ // 75이상
                 userCarbo = userCalorie*0.6/4;
@@ -473,7 +473,7 @@ public class FirstPopupActivity extends Activity {
                 userVitaminB = 1.2;
                 userVitaminC = 100;
                 userCalcium = 700;
-                userNatrium = 1.1;
+                userNatrium = 1100;
                 userIron = 8;
             }
         }
