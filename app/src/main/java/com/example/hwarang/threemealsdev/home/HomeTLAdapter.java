@@ -69,13 +69,6 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
     public HomeTLAdapter(Context mContext, ArrayList<WordItemData> data) {
         this.mContext = mContext;
         this.data = data;
-        /*
-        colors.add(mContext.getResources().getColor(R.color.pieColor1));
-        colors.add(mContext.getResources().getColor(R.color.pieColor2));
-        colors.add(mContext.getResources().getColor(R.color.pieColor3));
-        colors.add(mContext.getResources().getColor(R.color.pieColor4));
-        colors.add(mContext.getResources().getColor(R.color.pieColor5));
-        */
     }
 
     @Override
