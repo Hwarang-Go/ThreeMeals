@@ -83,8 +83,8 @@ public class FirstPopupActivity extends Activity {
     private double userHeight, userWeight, stdWeight, userCalorie;   // 사용자 키, 몸무게, 표준몸무게, 권장섭취칼로리
     public double userKcal, userCarbo, userProtein, userFat, userCalcium, userIron, userNatrium,
             userVitaminA, userVitaminB, userVitaminC; // 사용자 추천 칼로리, 탄수화물, 단백질, 지방, 칼슘, 철, 나트륨, 비타민ABC
-    private Boolean userGender;
-    private Double userPhysical;    // 사용자 활동량
+    private boolean userGender;
+    private double userPhysical;    // 사용자 활동량
     private ArrayAdapter sAdapter, pAdapter;
     private int sSelect, pSelect;
 
@@ -208,15 +208,12 @@ public class FirstPopupActivity extends Activity {
         //intent.putExtra("result", "Close Popup");
         //setResult(RESULT_OK, intent);
 
-        //TODO 현재 빈칸으로 제출 시 에러나는 경우 발견함, 추후에 머터리얼 디자인으로 구성하면서 수정해야함.
 
         if(edtAge.getText().toString().length() <= 0
                 || edtTall.getText().toString().length() <= 0
                 || edtWeight.getText().toString().length() <= 0){
             Toast.makeText(this,"정보를 입력해주세요!",Toast.LENGTH_LONG).show();
         }else{
-
-
 
         userAge = Long.parseLong(edtAge.getText().toString());
         userHeight = Double.parseDouble(edtTall.getText().toString());

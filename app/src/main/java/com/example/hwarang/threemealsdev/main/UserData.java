@@ -56,6 +56,5 @@ public class UserData {
         this.userVitaminC = userVitaminC;
 
     }
-    //TODO 나중에 영양소 추가해서 생성자 바꿔줘야함
 
 }

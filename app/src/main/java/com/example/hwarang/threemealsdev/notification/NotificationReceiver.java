@@ -28,8 +28,7 @@ public class NotificationReceiver extends BroadcastReceiver{
     public void onReceive(Context context, Intent intent) {
         Toast.makeText(context, "Alarm Received!", Toast.LENGTH_LONG).show();
         Log.d("notifi test", "noti test1");
-        //Uri notificatin =
-        //TODO notification
+
         NotificationManager nm = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0,

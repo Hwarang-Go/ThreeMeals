@@ -99,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
                 userData.userPhoto = mFirebaseUser.getPhotoUrl().toString();
                 //Log.d("profile img check",userData.userPhoto);
             }
-            //TODO 로그인된 사용자의 정보를 객체에 넣어줄 부분
             sp = getSharedPreferences("isFirst", MODE_PRIVATE);
             boolean first = sp.getBoolean("isFirst", false);
             Log.d("sp set", "set sp false");
@@ -179,7 +178,6 @@ public class MainActivity extends AppCompatActivity {
                     Intent i = new Intent(MainActivity.this, FirstPopupActivity.class);
                     startActivity(i);
                 }
-                //TODO update 버튼 누르면 user profile update 하는 액티비티 호출
 
                 // 다하고 드로워 닫아주기
                 mDrawerLayout.closeDrawers();
@@ -206,7 +204,6 @@ public class MainActivity extends AppCompatActivity {
 
         // bottom Navigation view 부분 start
 
-        //TODO 슬라이드로 넘기는 부분 구현해야함
 
         bottomNavigationView.setOnNavigationItemSelectedListener(
                 new BottomNavigationView.OnNavigationItemSelectedListener() {

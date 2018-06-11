@@ -142,7 +142,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    //TODO update user profile
     private void updateUI(FirebaseUser user){
         // Need to update
     }
