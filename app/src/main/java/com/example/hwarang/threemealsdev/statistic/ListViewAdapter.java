@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,11 +55,14 @@ public class ListViewAdapter extends BaseAdapter {
                 switch (v.getId()) {
                     case R.id.imageButton:
                         setIntentData(position);
+                        Log.d("jh","투입되기 전 infoModel "+ infoModels.get(0).foodname);
+                        Log.d("jh","투입되기 전 moreData  "+ moreData.get(0).foodName);
                         Intent intent = new Intent(context,MoreButtonActivity.class);
                         intent.putExtra("title",data.get(position).getNutName());
                         intent.putExtra("data",moreData);
                         context.startActivity(intent);
                         //context.startActivity(new Intent(context, MoreButtonActivity.class));
+                        //infoModels.clear();
                         break;
 
                     default:
@@ -101,8 +105,8 @@ public class ListViewAdapter extends BaseAdapter {
         item.setNutData(nutData);
         this.data.set(position,item);
     }
-    public void setInfoModels(ArrayList<infoModel> iM){
-        this.infoModels = iM;
+    public void setInfoModels(infoModel iM){
+        this.infoModels.add(iM);
     }
 
 

@@ -10,7 +10,7 @@ public class UserData {
     public Double userHeight;   // 사용자 키
     public Double userWeight;   // 사용자 몸무게
     public Double stdWeight;    // 사용자 표준 몸무게
-    public Double userCalorie;  // 사용자 권장 섭취 칼로리
+    public double userCalorie;  // 사용자 권장 섭취 칼로리
     public Boolean userGender;  // 사용자 성별
     public Double userPhysical;   // 사용자 활동량
     //public double userKcal; // 사용자 추천 칼로리
@@ -31,7 +31,7 @@ public class UserData {
     }
 
     public UserData(String userName, String email, Long userAge, Double userHeight,
-                    Double userWeight, Double stdWeight, Double userCalorie, Boolean userGender,
+                    Double userWeight, Double stdWeight, double userCalorie, Boolean userGender,
                     Double userPhysical, double userCarbo, double userProtein,
                     double userFat, double userCalcium, double userIron, double userNatrium,
                     double userVitaminA, double userVitaminB, double userVitaminC){

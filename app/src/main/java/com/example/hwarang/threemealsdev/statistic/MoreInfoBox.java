@@ -1,6 +1,8 @@
 package com.example.hwarang.threemealsdev.statistic;
 
-public class MoreInfoBox {
+import java.io.Serializable;
+
+public class MoreInfoBox implements Serializable {
     public String foodName;
     public double foodData;
 }

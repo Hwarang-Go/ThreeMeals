@@ -98,7 +98,7 @@ public class FirstPopupActivity extends Activity {
 
 
         //타이틀바 없애기
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        //requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_first_popup);
 
         // firebase database 및 auth, user profile 가져올 것들

@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment {
         recyclerView = (RecyclerView)view.findViewById(R.id.home_recycler);
 
         setData();
-        setRecyclerView();
+        //setRecyclerView();
 
         return view;
     }
@@ -86,10 +86,6 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
-        if(inputData.isEmpty()){
-            WordItemData item = new WordItemData("",0,0,0,"");
-            inputData.add(item);
-        }
         adapter = new HomeTLAdapter(getActivity(),inputData);
         recyclerView.setAdapter(adapter);
 
@@ -110,7 +106,10 @@ public class HomeFragment extends Fragment {
                 inputData.clear();
                 for( DataSnapshot snapshot : dataSnapshot.getChildren() ){//날짜
                     for(DataSnapshot snapshot1 : snapshot.getChildren()){//각 끼니?
+
                         DietModel dm = snapshot1.getValue(DietModel.class);
+                        if(dm.query.equals("welcome"))
+                            continue;
                         WordItemData item = new WordItemData(dm.time,dm.carbo,dm.protein,dm.fat,dm.foodname);
                         inputData.add(item);
                     }
