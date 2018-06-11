@@ -8,15 +8,13 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+
+        <item name="android:statusBarColor">#000</item>
     </style>
 
     <style name="SplashTheme" parent = "@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">@drawable/bg_splash_img</item>
     </style>
 
-    <!-- GregorianCalendar style -->
-    <style name="DatePicker" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/mainColor</item>
-    </style>
 
 </resources>

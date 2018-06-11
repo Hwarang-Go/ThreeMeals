@@ -1,5 +1,6 @@
 package com.example.hwarang.threemealsdev.main;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -12,6 +13,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -19,6 +21,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hwarang.threemealsdev.R;
@@ -31,6 +35,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.github.mikephil.charting.charts.RadarChart;
+import com.squareup.picasso.Picasso;
+
+import org.w3c.dom.Text;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,8 +97,56 @@ public class MainActivity extends AppCompatActivity {
             userData.email = mFirebaseUser.getEmail();
             if(mFirebaseUser.getPhotoUrl() != null){
                 userData.userPhoto = mFirebaseUser.getPhotoUrl().toString();
+                //Log.d("profile img check",userData.userPhoto);
             }
             //TODO 로그인된 사용자의 정보를 객체에 넣어줄 부분
+            sp = getSharedPreferences("isFirst", MODE_PRIVATE);
+            boolean first = sp.getBoolean("isFirst", false);
+            Log.d("sp set", "set sp false");
+            if(!first){
+                Log.d("Is first Time?","yes first");
+
+                //나중에 주석 해제해야 최초 실행 이후에는 팝업창이 뜨지 않음.
+                SharedPreferences.Editor editor = sp.edit();
+                editor.putBoolean("isFirst", true);
+                editor.apply();
+
+                //최초 실행 시 나이, 키, 몸무게 입력하라는 팝업 띄울 위치
+                //startActivity(new Intent(this, FirstPopupActivity.class));
+                // 다이일로그 바디
+                final AlertDialog.Builder alert_confirm = new AlertDialog.Builder(this);
+                //메세지
+                alert_confirm.setMessage("사용자 정보를 입력해야 합니다");
+                // 바깥 터치 시 안 닫히게
+                alert_confirm.setCancelable(false);
+                // 확인 버튼 리스너
+                alert_confirm.setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent i = new Intent(MainActivity.this, FirstPopupActivity.class);
+                        startActivity(i);
+                    }
+                });
+                // 다이얼로그 생성
+                final AlertDialog alert = alert_confirm.create();
+                // 아이콘
+                alert.setIcon(R.drawable.ic_mom);
+                // 다이얼로그 타이틀
+                alert.setTitle("처음 오셨군요!");
+                // 다이얼로그 띄우기
+                alert.show();
+                //
+                alert.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        alert.dismiss();
+                        Intent i = new Intent(MainActivity.this, FirstPopupActivity.class);
+                        startActivity(i);
+                    }
+                });
+            }else{
+                Log.d("Is first Time?","not first");
+            }
         }
 
 
@@ -120,6 +175,9 @@ public class MainActivity extends AppCompatActivity {
                     FirebaseAuth.getInstance().signOut();
                     Intent i = new Intent(MainActivity.this, LoginActivity.class);
                     startActivity(i);
+                }else if(id == R.id.menu_nav_update_profile){
+                    Intent i = new Intent(MainActivity.this, FirstPopupActivity.class);
+                    startActivity(i);
                 }
                 //TODO update 버튼 누르면 user profile update 하는 액티비티 호출
 
@@ -128,6 +186,21 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        View nav_profie_view = navigationView.getHeaderView(0);
+        TextView nav_profile_name = (TextView)nav_profie_view.findViewById(R.id.profile_name);
+        nav_profile_name.setText(userData.userName);
+        Log.d("profile check", nav_profile_name.getText().toString());
+        TextView nav_profile_email = (TextView) nav_profie_view.findViewById(R.id.profile_email);
+        nav_profile_email.setText(userData.email);
+        Log.d("profile check", nav_profile_email.getText().toString());
+
+        ImageView nav_profile_photo = (ImageView) nav_profie_view.findViewById(R.id.profile_img);
+        Picasso.get()
+                .load(userData.userPhoto)
+                .error(R.drawable.ic_bot)
+                .into(nav_profile_photo);
+        Log.d("profile img check",userData.userPhoto+"1");
         // Navigation View end
 
 
@@ -165,32 +238,15 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.main_fragment_container, HomeFragment.getInstance());
         transaction.commit();
 
-        sp = getSharedPreferences("isFirst", MODE_PRIVATE);
-        boolean first = sp.getBoolean("isFirst", false);
-        Log.d("sp set", "set sp false");
-        if(!first){
-            Log.d("Is first Time?","yes first");
-
-            //TODO 나중에 주석 해제해야 최초 실행 이후에는 팝업창이 뜨지 않음.
-            SharedPreferences.Editor editor = sp.edit();
-            editor.putBoolean("isFirst", true);
-            editor.apply();
-
-            //TODO 최초 실행 시 나이, 키, 몸무게 입력하라는 팝업 띄울 위치
-            startActivity(new Intent(this, FirstPopupActivity.class));
-        }else{
-            Log.d("Is first Time?","not first");
-        }
-
     }
 
 
-    public void onClickButton(View view){
+    /*public void onClickButton(View view){
         FirebaseAuth.getInstance().signOut();
         Log.d("signout ok?", "signout");
         Intent i = new Intent(MainActivity.this, LoginActivity.class);
         startActivity(i);
-    }
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -205,4 +261,6 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "한번 더 누르시면 종료합니다.", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }
