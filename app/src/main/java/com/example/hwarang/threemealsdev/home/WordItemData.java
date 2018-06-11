@@ -9,12 +9,19 @@ public class WordItemData{
     public double car;
     public double prt;
     public double fat;
-    public ArrayList<String> txfood=new ArrayList<String>();
+    public ArrayList<String> txfood;
     public String typeOfMills;
 
     // 화면에 표시될 문자열 초기화
 
-    public WordItemData(){}
+    public WordItemData(){
+        this.car =0;
+        this.prt = 0;
+        this.fat = 0;
+        this.typeOfMills = null;
+        this.txdate = null;
+        this.txfood = new ArrayList<String>();
+    }
 
     public WordItemData(String txdate,double car, double prt, double fat,ArrayList<String> txfood) {
         this.txdate = txdate;
