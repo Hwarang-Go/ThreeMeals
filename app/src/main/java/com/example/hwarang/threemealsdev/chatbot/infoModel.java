@@ -1,7 +1,6 @@
 package com.example.hwarang.threemealsdev.chatbot;
 
 public class infoModel  {
-
     public String foodname;
     public double foodAmount;
     public double kcal;
