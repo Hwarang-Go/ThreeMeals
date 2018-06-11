@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!-- 팝업 Activity -->
+        <activity android:name=".statistic.MoreButtonActivity" android:theme="@android:style/Theme.Dialog" />
+
         <activity android:name=".login.LoginActivity">
 
         </activity>

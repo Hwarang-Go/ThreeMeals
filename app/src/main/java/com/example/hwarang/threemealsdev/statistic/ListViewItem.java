@@ -16,4 +16,8 @@ public class ListViewItem {
         this.nutName=name;
         this.icon = icon;
     }
+
+    public void setNutData(int nutData) {
+        this.nutData = nutData;
+    }
 }
