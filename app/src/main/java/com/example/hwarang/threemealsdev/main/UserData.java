@@ -6,13 +6,13 @@ public class UserData {
     public String userName;     // 사용자 이름
     public String email;        // user email
     public String userPhoto;    // user profile picture
-    public Long userAge;      // 사용자 나이
-    public Double userHeight;   // 사용자 키
-    public Double userWeight;   // 사용자 몸무게
-    public Double stdWeight;    // 사용자 표준 몸무게
-    public Double userCalorie;  // 사용자 권장 섭취 칼로리
-    public Boolean userGender;  // 사용자 성별
-    public Double userPhysical;   // 사용자 활동량
+    public long userAge;      // 사용자 나이
+    public double userHeight;   // 사용자 키
+    public double userWeight;   // 사용자 몸무게
+    public double stdWeight;    // 사용자 표준 몸무게
+    public double userCalorie;  // 사용자 권장 섭취 칼로리
+    public boolean userGender;  // 사용자 성별
+    public double userPhysical;   // 사용자 활동량
     //public double userKcal; // 사용자 추천 칼로리
     public double userCarbo;    // 사용자 추천 탄수화물
     public double userProtein;  // 사용자 추천 단백질

@@ -11,6 +11,7 @@
     <color name="sGray">#d0d0d0</color>
     <color name="white">#FFF</color>
     <color name="font">#606060</color>
+    <color name="submainColor">#31C0A9</color>
 
 
 </resources>

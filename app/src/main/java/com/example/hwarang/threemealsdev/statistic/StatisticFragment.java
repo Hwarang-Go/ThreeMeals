@@ -114,7 +114,7 @@ public class StatisticFragment extends ListFragment {
         if(userDiet.kcal == 0)
             resultDiet.kcal = 0;
         else
-            resultDiet.kcal = Math.round(userDiet.kcal / recData.userCalorie.doubleValue() * 100);
+            resultDiet.kcal = Math.round(userDiet.kcal / recData.userCalorie * 100);
 
         if(userDiet.iron == 0)
             resultDiet.iron = 0;

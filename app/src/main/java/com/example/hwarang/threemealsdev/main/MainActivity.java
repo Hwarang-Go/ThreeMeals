@@ -154,12 +154,15 @@ public class MainActivity extends AppCompatActivity {
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar,
                 R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
+        // DrawerLayout 부분 end
 
+        // actionbar 설정 부분 start
         final ActionBar actionBar = getSupportActionBar();
+        //actionBar.setTitle(getString(R.string.app_name));
         actionBar.setHomeAsUpIndicator(R.mipmap.ic_launcher);
         actionBar.setDisplayHomeAsUpEnabled(true);
+        // actionbar 설정 부분 end
 
-        // DrawerLayout 부분 end
 
 
         // Navigation View start

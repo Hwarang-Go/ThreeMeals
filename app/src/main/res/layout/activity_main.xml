@@ -27,10 +27,15 @@
                 android:layout_height="?attr/actionBarSize"
                 android:layout_alignParentTop="true"
                 android:elevation="4dp"
-                android:background="@color/mainColor"
+                android:background="#31C0A9"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
+                <ImageView
+                    android:layout_width="135dp"
+                    android:layout_height="55dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/img_eatmeal"/>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
