@@ -28,7 +28,7 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
     public String sDate;
     ArrayList<WordItemData> data = new ArrayList<WordItemData>();
     List<PieEntry> entries;
-    List<Integer> colors = new ArrayList<>();
+    //List<Integer> colors = new ArrayList<>();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public PieChart pieChart;
@@ -121,7 +121,7 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
         holder.pieChart.getDescription().setEnabled(false);
         holder.pieChart.setRotationEnabled(false);
 
-        //holder.pieChart.setCenterText("Всего");
+        //holder.pieChart.setCenterText("");
         //holder.pieChart.setCenterTextSize(12);
         //pieChart.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.colorPrimary));
         holder.pieChart.setDrawEntryLabels(false);
