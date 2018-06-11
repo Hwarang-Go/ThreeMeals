@@ -28,7 +28,7 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
     public String sDate;
     ArrayList<WordItemData> data = new ArrayList<WordItemData>();
     List<PieEntry> entries;
-    List<Integer> colors = new ArrayList<>();
+    //List<Integer> colors = new ArrayList<>();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public PieChart pieChart;
@@ -69,13 +69,6 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
     public HomeTLAdapter(Context mContext, ArrayList<WordItemData> data) {
         this.mContext = mContext;
         this.data = data;
-        /*
-        colors.add(mContext.getResources().getColor(R.color.pieColor1));
-        colors.add(mContext.getResources().getColor(R.color.pieColor2));
-        colors.add(mContext.getResources().getColor(R.color.pieColor3));
-        colors.add(mContext.getResources().getColor(R.color.pieColor4));
-        colors.add(mContext.getResources().getColor(R.color.pieColor5));
-        */
     }
 
     @Override
@@ -88,13 +81,26 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
-        holder.txtDate.setText(data.get(position).txdate);
-        holder.txtFoodName.setText(data.get(position).txfood);
 
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
-        yValues.add(new PieEntry((float)data.get(position).car,"탄수화물"));
-        yValues.add(new PieEntry((float)data.get(position).prt,"단백질"));
-        yValues.add(new PieEntry((float)data.get(position).fat,"지방"));
+        if(data.isEmpty()) {
+            holder.txtDate.setText("");
+            holder.txtFoodName.setText("");
+            yValues.add(new PieEntry(0,"탄수화물"));
+            yValues.add(new PieEntry(0,"단백질"));
+            yValues.add(new PieEntry(0,"지방"));
+
+        }
+        else{
+            holder.txtDate.setText(data.get(position).txdate);
+            holder.txtFoodName.setText(data.get(position).txfood);
+
+            yValues.add(new PieEntry((float)data.get(position).car,"탄수화물"));
+            yValues.add(new PieEntry((float)data.get(position).prt,"단백질"));
+            yValues.add(new PieEntry((float)data.get(position).fat,"지방"));
+
+        }
+
 
         PieDataSet pieDataSet = new PieDataSet(yValues, "영양소");
 
@@ -115,7 +121,7 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
         holder.pieChart.getDescription().setEnabled(false);
         holder.pieChart.setRotationEnabled(false);
 
-        //holder.pieChart.setCenterText("Всего");
+        //holder.pieChart.setCenterText("");
         //holder.pieChart.setCenterTextSize(12);
         //pieChart.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.colorPrimary));
         holder.pieChart.setDrawEntryLabels(false);
