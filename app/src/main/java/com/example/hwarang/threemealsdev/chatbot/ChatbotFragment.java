@@ -289,6 +289,7 @@ public class ChatbotFragment extends Fragment implements AIListener {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get Post object and use the values to update the UI;
+
                         infoModel = dataSnapshot.getValue(infoModel.class);
                         dietmodel.foodAmount = infoModel.foodAmount;
                         dietmodel.kcal = infoModel.kcal;
@@ -445,6 +446,7 @@ public class ChatbotFragment extends Fragment implements AIListener {
                                     food_list.add(item.getValue(DietModel.class).food);
                                 }
                             }
+
                             chatmodel.user = false;
                             if (!food_list.toString().equals("[]")) {
                                 chatmodel.message = datetime.getString("datetime", "") + " 저녁에 " + food_list.toString().substring(1, food_list.toString().length() - 1) + " 드셨습니다.";
@@ -510,21 +512,21 @@ public class ChatbotFragment extends Fragment implements AIListener {
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             MessageViewHolder messageViewHolder = (MessageViewHolder)holder;
 
+
             // 내 메세지
             if(messages.get(position).user) {
                 messageViewHolder.textView_message.setText(messages.get(position).message);
-                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chatuser2);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chatbot3);
                 messageViewHolder.linearLayout_chatbot.setVisibility(View.INVISIBLE);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
             }
             // 챗봇 메세지
             else{
                 messageViewHolder.textView_message.setText(messages.get(position).message);
-                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chatbot2);
+                messageViewHolder.textView_message.setBackgroundResource(R.drawable.chatbot3);
                 messageViewHolder.linearLayout_chatbot.setVisibility(View.VISIBLE);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);
             }
-
         }
         @Override
         public int getItemCount() {
