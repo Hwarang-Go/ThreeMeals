@@ -37,7 +37,7 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
 
         public MyViewHolder(View view) {
             super(view);
-            pieChart = (PieChart) view.findViewById(R.id.chart);
+            pieChart = (PieChart) view.findViewById(R.id.pieChart);
             txtDate = (TextView)view.findViewById(R.id.txt_date);
             txtFoodName = (TextView)view.findViewById(R.id.txt_date);
 

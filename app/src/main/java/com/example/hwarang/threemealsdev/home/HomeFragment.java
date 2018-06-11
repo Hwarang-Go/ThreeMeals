@@ -86,6 +86,10 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(layoutManager);
+        if(inputData.isEmpty()){
+            WordItemData item = new WordItemData("",0,0,0,"");
+            inputData.add(item);
+        }
         adapter = new HomeTLAdapter(getActivity(),inputData);
         recyclerView.setAdapter(adapter);
 
