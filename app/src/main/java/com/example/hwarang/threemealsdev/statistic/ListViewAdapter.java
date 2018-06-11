@@ -4,7 +4,9 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ import com.example.hwarang.threemealsdev.chatbot.infoModel;
 import com.example.hwarang.threemealsdev.main.MainActivity;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 
 public class ListViewAdapter extends BaseAdapter {
@@ -27,6 +30,12 @@ public class ListViewAdapter extends BaseAdapter {
     public ArrayList<MoreInfoBox> moreData = new ArrayList<MoreInfoBox>();
     public ArrayList<infoModel> infoModels = new ArrayList<infoModel>();
     private ArrayList<ListViewItem> data = new ArrayList<ListViewItem>() ;
+    private final static Comparator<MoreInfoBox>sortByData = new Comparator<MoreInfoBox>() {
+        @Override
+        public int compare(@NonNull MoreInfoBox o1, MoreInfoBox o2) {
+            return Double.compare(o1.foodData,o2.foodData);
+        }
+    };
     public ListViewAdapter(){
     }
     @Override
@@ -55,8 +64,8 @@ public class ListViewAdapter extends BaseAdapter {
                 switch (v.getId()) {
                     case R.id.imageButton:
                         setIntentData(position);
-                        Log.d("jh","투입되기 전 infoModel "+ infoModels.get(0).foodname);
-                        Log.d("jh","투입되기 전 moreData  "+ moreData.get(0).foodName);
+                        Collections.sort(moreData,sortByData);
+                        Collections.reverse(moreData);
                         Intent intent = new Intent(context,MoreButtonActivity.class);
                         intent.putExtra("title",data.get(position).getNutName());
                         intent.putExtra("data",moreData);
@@ -200,5 +209,6 @@ public class ListViewAdapter extends BaseAdapter {
         }
 
     }
+
 }
 

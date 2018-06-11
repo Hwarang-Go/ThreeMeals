@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import butterknife.ButterKnife;
 
@@ -36,6 +38,10 @@ public class HomeFragment extends Fragment {
 
     private RecyclerView recyclerView;
     ArrayList<WordItemData> inputData = new ArrayList<WordItemData>();
+
+    WordItemData breakfast = new WordItemData();
+    WordItemData lunch = new WordItemData();
+    WordItemData dinner = new WordItemData();
     public HomeTLAdapter adapter;
     public FirebaseDatabase mDatabase;
     public DatabaseReference mReference;
@@ -105,14 +111,42 @@ public class HomeFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 inputData.clear();
                 for( DataSnapshot snapshot : dataSnapshot.getChildren() ){//날짜
+                    Log.d("jh","현재 날짜"+snapshot.getKey());
+
+                    breakfast.resetData();
+                    lunch.resetData();
+                    dinner.resetData();
                     for(DataSnapshot snapshot1 : snapshot.getChildren()){//각 끼니?
 
                         DietModel dm = snapshot1.getValue(DietModel.class);
                         if(dm.query.equals("welcome"))
                             continue;
-                        WordItemData item = new WordItemData(dm.time,dm.carbo,dm.protein,dm.fat,dm.foodname);
-                        inputData.add(item);
+                        Log.d("jh","현재 식단 "+ dm.food);
+
+                        if(dm.date_order==1){
+                            breakfast.txdate = snapshot.getKey();
+                            breakfast.plusData(dm.carbo,dm.protein,dm.fat,dm.food);
+                        }
+                        else if(dm.date_order==2){
+                            lunch.txdate = snapshot.getKey();
+                            lunch.plusData(dm.carbo,dm.protein,dm.fat,dm.food);
+                        }
+                        else{
+                            dinner.txdate = snapshot.getKey();
+                            dinner.plusData(dm.carbo,dm.protein,dm.fat,dm.food);
+                        }
                     }
+                    breakfast.typeOfMills = "아침";
+                    lunch.typeOfMills = "점심";
+                    dinner.typeOfMills = "저녁";
+                    if(breakfast.car > 0)
+                        inputData.add(breakfast);
+                    if(lunch.car > 0)
+                        inputData.add(lunch);
+                    if(lunch.car > 0)
+                        inputData.add(dinner);
+
+
 
             }
             setRecyclerView();

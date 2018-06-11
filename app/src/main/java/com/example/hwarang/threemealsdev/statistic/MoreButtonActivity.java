@@ -2,10 +2,12 @@ package com.example.hwarang.threemealsdev.statistic;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -50,7 +52,16 @@ public class MoreButtonActivity extends Activity{
 
         SimpleAdapter adapter = new SimpleAdapter(this,list,android.R.layout.simple_list_item_2,
                 new String[]{"foodName","foodData"},
-                new int[]{android.R.id.text1,android.R.id.text2});
+                new int[]{android.R.id.text1,android.R.id.text2}){
+            public View getView(int position, View convertView, ViewGroup parent) {
+                View view = super.getView(position, convertView, parent);
+                TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+                text1.setTextColor(Color.rgb(0,0,0));
+                text1.setTextSize(15f);
+                return view;
+            };
+        };
+
         listView.setAdapter(adapter);
     }
 

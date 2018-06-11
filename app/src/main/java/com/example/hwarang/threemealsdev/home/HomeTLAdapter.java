@@ -95,12 +95,16 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
 
         }
         else{
-            holder.txtDate.setText(data.get(position).txdate);
-            holder.txtFoodName.setText(data.get(position).txfood);
+            holder.txtDate.setText(data.get(position).txdate+" " + data.get(position).typeOfMills);
+            //holder.txtFoodName.setText(data.get(position).txfood);
 
-            yValues.add(new PieEntry((float)data.get(position).car,"탄수화물"));
-            yValues.add(new PieEntry((float)data.get(position).prt,"단백질"));
-            yValues.add(new PieEntry((float)data.get(position).fat,"지방"));
+            double inputCar = data.get(position).car/(data.get(position).car+data.get(position).prt+data.get(position).fat);
+            double inputprt = data.get(position).prt/(data.get(position).car+data.get(position).prt+data.get(position).fat);
+            double inputfat = data.get(position).fat/(data.get(position).car+data.get(position).prt+data.get(position).fat);
+
+            yValues.add(new PieEntry((float)inputCar,"탄수화물"));
+            yValues.add(new PieEntry((float)inputprt,"단백질"));
+            yValues.add(new PieEntry((float)inputfat,"지방"));
 
         }
 
@@ -126,7 +130,7 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
 
         //holder.pieChart.setCenterText("");
         //holder.pieChart.setCenterTextSize(12);
-        holder.pieChart.setBackgroundResource(R.drawable.edge_draw);
+        //holder.pieChart.setBackgroundResource(R.drawable.edge_draw);
         holder.pieChart.setDrawEntryLabels(false);
         /*
         Description description = new Description();
