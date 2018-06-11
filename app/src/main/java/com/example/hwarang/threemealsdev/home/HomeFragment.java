@@ -113,42 +113,54 @@ public class HomeFragment extends Fragment {
                 for( DataSnapshot snapshot : dataSnapshot.getChildren() ){//날짜
                     Log.d("jh","현재 날짜"+snapshot.getKey());
 
-                    breakfast.resetData();
-                    lunch.resetData();
-                    dinner.resetData();
+                    breakfast = new WordItemData();
+                    lunch = new WordItemData();
+                    dinner = new WordItemData();
                     for(DataSnapshot snapshot1 : snapshot.getChildren()){//각 끼니?
 
                         DietModel dm = snapshot1.getValue(DietModel.class);
+                        Log.d("hr",dm.food.toString()+snapshot.getKey());
                         if(dm.query.equals("welcome"))
                             continue;
                         Log.d("jh","현재 식단 "+ dm.food);
+                        Log.d("hr",dm.food.toString()+snapshot.getKey());
 
                         if(dm.date_order==1){
                             breakfast.txdate = snapshot.getKey();
                             breakfast.plusData(dm.carbo,dm.protein,dm.fat,dm.food);
+                            Log.d("hr",dm.food.toString()+snapshot.getKey()+" 1 "+dm.date_order);
+                            breakfast.typeOfMills = "아침";
+                            inputData.add(breakfast);
                         }
                         else if(dm.date_order==2){
                             lunch.txdate = snapshot.getKey();
                             lunch.plusData(dm.carbo,dm.protein,dm.fat,dm.food);
+                            Log.d("hr",dm.food.toString()+snapshot.getKey()+" 2 "+dm.date_order);
+                            lunch.typeOfMills = "점심";
+                            inputData.add(lunch);
                         }
-                        else{
+                        else if(dm.date_order==3){
                             dinner.txdate = snapshot.getKey();
                             dinner.plusData(dm.carbo,dm.protein,dm.fat,dm.food);
+                            Log.d("hr",dm.food.toString()+snapshot.getKey()+" 3 "+dm.date_order);
+                            dinner.typeOfMills = "저녁";
+                            inputData.add(dinner);
                         }
                     }
-                    breakfast.typeOfMills = "아침";
-                    lunch.typeOfMills = "점심";
-                    dinner.typeOfMills = "저녁";
-                    if(breakfast.car > 0)
-                        inputData.add(breakfast);
+
+
+
+
+                    /*if(breakfast.car > 0)
+
                     if(lunch.car > 0)
-                        inputData.add(lunch);
-                    if(lunch.car > 0)
-                        inputData.add(dinner);
+
+                    if(dinner.car > 0)*/
 
 
 
-            }
+
+                }
             setRecyclerView();
 
             }
