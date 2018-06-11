@@ -111,8 +111,8 @@ public class HomeFragment extends Fragment {
                         inputData.add(item);
                     }
 
-                }
-                setRecyclerView();
+            }
+            setRecyclerView();
 
             }
 
