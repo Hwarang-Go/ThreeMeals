@@ -26,8 +26,8 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
     private LinearLayout container;
     private Context mContext;
     public String sDate;
-    ArrayList<WordItemData> data = new ArrayList<WordItemData>();
-    List<Integer> colors = new ArrayList<>();
+    public ArrayList<WordItemData> sData = new ArrayList<WordItemData>();
+    public List<Integer> colors = new ArrayList<>();
     final int[] MY_COLORS = {Color.rgb(249,167,107), Color.rgb(124,204,179), Color.rgb(218,210,103)};
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -66,9 +66,9 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
         }
     }
 
-    public HomeTLAdapter(Context mContext, ArrayList<WordItemData> data) {
+    public HomeTLAdapter(Context mContext, ArrayList<WordItemData> sData) {
         this.mContext = mContext;
-        this.data = data;
+        this.sData = sData;
         for(int c: MY_COLORS) colors.add(c);
     }
 
@@ -83,10 +83,8 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
 
-
-
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
-        if(data.isEmpty()) {
+        if(sData.size()==0) {
             holder.txtDate.setText("");
             holder.txtFoodName.setText("");
             yValues.add(new PieEntry(0,"탄수화물"));
@@ -95,12 +93,16 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
 
         }
         else{
-            holder.txtDate.setText(data.get(position).txdate+" " + data.get(position).typeOfMills);
+            holder.txtDate.setText(sData.get(position).txdate+" " + sData.get(position).typeOfMills);
             //holder.txtFoodName.setText(data.get(position).txfood);
-
+            /*
             double inputCar = data.get(position).car/(data.get(position).car+data.get(position).prt+data.get(position).fat);
             double inputprt = data.get(position).prt/(data.get(position).car+data.get(position).prt+data.get(position).fat);
             double inputfat = data.get(position).fat/(data.get(position).car+data.get(position).prt+data.get(position).fat);
+            */
+            double inputCar = sData.get(position).car;
+            double inputprt = sData.get(position).prt;
+            double inputfat = sData.get(position).fat;
 
             yValues.add(new PieEntry((float)inputCar,"탄수화물"));
             yValues.add(new PieEntry((float)inputprt,"단백질"));
@@ -140,10 +142,14 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
         holder.pieChart.notifyDataSetChanged();
         holder.pieChart.invalidate();
     }
+    public void addData(WordItemData d){
+        sData.add(d);
+
+    }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return sData.size();
     }
 }
 
