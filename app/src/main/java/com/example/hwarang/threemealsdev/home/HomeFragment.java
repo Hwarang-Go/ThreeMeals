@@ -1,10 +1,6 @@
 package com.example.hwarang.threemealsdev.home;
 
 
-import android.app.Notification;
-import android.app.Notification.Builder;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,7 +10,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.hwarang.threemealsdev.R;
 import com.example.hwarang.threemealsdev.chatbot.DietModel;
@@ -32,9 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -57,8 +50,6 @@ public class HomeFragment extends Fragment {
     }
 
     private final static String TAG = "HomeFragment";
-
-    /*private Button btn;*/
 
     public HomeFragment() {
         // Required empty public constructor
