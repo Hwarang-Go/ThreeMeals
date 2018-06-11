@@ -129,33 +129,30 @@ public class HomeFragment extends Fragment {
                             breakfast.txdate = snapshot.getKey();
                             breakfast.plusData(dm.carbo,dm.protein,dm.fat,dm.food);
                             Log.d("hr",dm.food.toString()+snapshot.getKey()+" 1 "+dm.date_order);
-                            breakfast.typeOfMills = "아침";
-                            inputData.add(breakfast);
                         }
                         else if(dm.date_order==2){
                             lunch.txdate = snapshot.getKey();
                             lunch.plusData(dm.carbo,dm.protein,dm.fat,dm.food);
                             Log.d("hr",dm.food.toString()+snapshot.getKey()+" 2 "+dm.date_order);
-                            lunch.typeOfMills = "점심";
-                            inputData.add(lunch);
+
                         }
                         else if(dm.date_order==3){
                             dinner.txdate = snapshot.getKey();
                             dinner.plusData(dm.carbo,dm.protein,dm.fat,dm.food);
                             Log.d("hr",dm.food.toString()+snapshot.getKey()+" 3 "+dm.date_order);
-                            dinner.typeOfMills = "저녁";
-                            inputData.add(dinner);
                         }
                     }
+                    breakfast.typeOfMills = "아침";
+                    lunch.typeOfMills = "점심";
+                    dinner.typeOfMills = "저녁";
 
 
-
-
-                    /*if(breakfast.car > 0)
-
+                    if(breakfast.car > 0)
+                        inputData.add(breakfast);
                     if(lunch.car > 0)
-
-                    if(dinner.car > 0)*/
+                        inputData.add(breakfast);
+                    if(dinner.car > 0)
+                        inputData.add(breakfast);
 
 
 
