@@ -45,7 +45,7 @@
             android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:background="@android:color/white"
-            android:scaleType="fitCenter" />
+            android:scaleType="fitCenter"/>
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>
 

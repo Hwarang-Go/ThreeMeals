@@ -27,6 +27,10 @@
         <activity android:name=".login.LoginActivity"
             android:theme="@style/Theme.Design.NoActionBar">
 
+        </activity>
+
+        <activity android:name=".statistic.MoreButtonActivity"
+            android:theme="@android:style/Theme.Dialog">
 
         </activity>
 
@@ -56,6 +60,4 @@
             </intent-filter>
         </receiver>
     </application>
-
-
 </manifest>
