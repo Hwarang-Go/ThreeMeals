@@ -3,6 +3,7 @@ package com.example.hwarang.threemealsdev.statistic;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
@@ -18,8 +19,8 @@ import java.util.HashMap;
 
 public class MoreButtonActivity extends Activity{
     private TextView txtText;
-    private TextView txtText2;
     private ListView listView;
+    ArrayList<MoreInfoBox> mb;
     public ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,13 +31,13 @@ public class MoreButtonActivity extends Activity{
 
         //UI 객체생성
         txtText = (TextView)findViewById(R.id.more_title);
-        txtText2 = (TextView)findViewById(R.id.txtText);
         listView = (ListView)findViewById(R.id.more_list);
 
         //데이터 가져오기
         Intent intent = getIntent();
         String title = intent.getStringExtra("title");
-        ArrayList<MoreInfoBox> mb = (ArrayList<MoreInfoBox>)intent.getSerializableExtra("data");
+        mb = (ArrayList<MoreInfoBox>)intent.getSerializableExtra("data");
+        Log.d("jh","mb어레이 데이타 이름 "+mb.get(0).foodName);
         HashMap<String,String> item;
         for(int i = 0; i < mb.size();i++){
             item = new HashMap<String,String>();
@@ -58,6 +59,7 @@ public class MoreButtonActivity extends Activity{
         //데이터 전달하기
         /*
         Intent intent = new Intent();
+        mb.clear();
         intent.putExtra("result", "Close Popup");
         setResult(RESULT_OK, intent);
         */

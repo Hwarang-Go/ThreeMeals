@@ -6,6 +6,7 @@ public class UserData {
     public String userName;     // 사용자 이름
     public String email;        // user email
     public String userPhoto;    // user profile picture
+
     public long userAge;      // 사용자 나이
     public double userHeight;   // 사용자 키
     public double userWeight;   // 사용자 몸무게
@@ -31,7 +32,7 @@ public class UserData {
     }
 
     public UserData(String userName, String email, Long userAge, Double userHeight,
-                    Double userWeight, Double stdWeight, Double userCalorie, Boolean userGender,
+                    Double userWeight, Double stdWeight, double userCalorie, Boolean userGender,
                     Double userPhysical, double userCarbo, double userProtein,
                     double userFat, double userCalcium, double userIron, double userNatrium,
                     double userVitaminA, double userVitaminB, double userVitaminC){

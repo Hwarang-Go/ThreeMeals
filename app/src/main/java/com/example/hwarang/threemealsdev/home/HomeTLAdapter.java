@@ -27,8 +27,8 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
     private Context mContext;
     public String sDate;
     ArrayList<WordItemData> data = new ArrayList<WordItemData>();
-    List<PieEntry> entries;
-    //List<Integer> colors = new ArrayList<>();
+    List<Integer> colors = new ArrayList<>();
+    final int[] MY_COLORS = {Color.rgb(249,167,107), Color.rgb(124,204,179), Color.rgb(218,210,103)};
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public PieChart pieChart;
@@ -39,7 +39,7 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
             super(view);
             pieChart = (PieChart) view.findViewById(R.id.pieChart);
             txtDate = (TextView)view.findViewById(R.id.txt_date);
-            txtFoodName = (TextView)view.findViewById(R.id.txt_date);
+            txtFoodName = (TextView)view.findViewById(R.id.txt_foodName);
 
 
             //텍스트뷰 태그 동적할당
@@ -69,6 +69,7 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
     public HomeTLAdapter(Context mContext, ArrayList<WordItemData> data) {
         this.mContext = mContext;
         this.data = data;
+        for(int c: MY_COLORS) colors.add(c);
     }
 
     @Override
@@ -80,6 +81,8 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position) {
+
+
 
 
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
@@ -102,9 +105,9 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
         }
 
 
-        PieDataSet pieDataSet = new PieDataSet(yValues, "영양소");
+        PieDataSet pieDataSet = new PieDataSet(yValues, "");
 
-        pieDataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+        pieDataSet.setColors(colors);
         pieDataSet.setSliceSpace(2);
         pieDataSet.setValueTextSize(15);
 
@@ -123,7 +126,7 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
 
         //holder.pieChart.setCenterText("");
         //holder.pieChart.setCenterTextSize(12);
-        //pieChart.setBackgroundColor(getApplicationContext().getResources().getColor(R.color.colorPrimary));
+        holder.pieChart.setBackgroundResource(R.drawable.edge_draw);
         holder.pieChart.setDrawEntryLabels(false);
         /*
         Description description = new Description();

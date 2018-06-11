@@ -213,9 +213,26 @@ public class StatisticFragment extends ListFragment {
                         userDiet.vitaminB += diet.vitaminB;
                         userDiet.vitaminC += diet.vitaminC;
 
-                        foodData.add(diet);
+                        if(diet.query.equals("welcome"))
+                            continue;
+                        infoModel im = new infoModel();
+                        im.carbo = diet.carbo;
+                        im.protein = diet.protein;
+                        im.fat = diet.fat;
+                        im.calcium = diet.calcium;
+                        im.iron = diet.iron;
+                        im.natrium = diet.natrium;
+                        im.kcal = diet.kcal;
+                        im.vitaminA = diet.vitaminA;
+                        im.vitaminB = diet.vitaminB;
+                        Log.d("jh","1번 지점 푸드네임 "+im.carbo+"\n");
+                        im.vitaminC = diet.vitaminC;
+                        im.foodname = diet.food;
+                        Log.d("jh","1번 지점 푸드네임 "+im.foodname+"\n");
+
+                        adapter.setInfoModels(im);
+                        Log.d("jh","1번 지점 푸드네임 "+im.foodname+"\n");
                     }
-                    adapter.setInfoModels(foodData);
 
                     makeResult();
 
