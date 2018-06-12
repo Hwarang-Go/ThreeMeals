@@ -84,7 +84,7 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
 
-        Collections.reverse(sData);
+
 
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
         if(sData.size()==0) {

@@ -26,6 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -156,6 +157,7 @@ public class HomeFragment extends Fragment {
 
 
                 }
+                Collections.reverse(inputData);
 
                 Log.d("jh","인풋데이타 사이즈" + inputData.size());
                 setRecyclerView();
