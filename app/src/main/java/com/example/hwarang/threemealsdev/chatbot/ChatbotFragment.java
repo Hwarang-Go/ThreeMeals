@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.TimeZone;
 
@@ -44,6 +45,7 @@ import ai.api.android.AIService;
 import ai.api.model.AIError;
 import ai.api.model.AIRequest;
 import ai.api.model.AIResponse;
+import ai.api.model.ResponseMessage;
 import ai.api.model.Result;
 import butterknife.ButterKnife;
 
@@ -263,8 +265,16 @@ public class ChatbotFragment extends Fragment implements AIListener {
 
             chatmodel.time = simpleDateFormat.format(date);
             chatmodel.user = false;
-            chatmodel.message = result.getFulfillment().getSpeech();
-            FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
+            
+            int messageCount = result.getFulfillment().getMessages().size(); // 반응메세지list
+            if (messageCount > 1) {
+                for (int i = 0; i < messageCount; i++) {
+                    ResponseMessage.ResponseSpeech responseMessage = (ResponseMessage.ResponseSpeech) result.getFulfillment().getMessages().get(i);
+                    chatmodel.message = responseMessage.speech.toString().substring(1,responseMessage.speech.toString().length()-1);
+                    FirebaseDatabase.getInstance().getReference().child(uid).child("Chat").push().setValue(chatmodel);
+                }
+            }
+
 
             chatmodel.time = simpleDateFormat.format(date);
             chatmodel.message = "안녕하세요! 1개씩 식단입력을 해주시거나 지난 날짜의 식단을 물어보세요.";
@@ -289,7 +299,6 @@ public class ChatbotFragment extends Fragment implements AIListener {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Get Post object and use the values to update the UI;
-
                         infoModel = dataSnapshot.getValue(infoModel.class);
                         dietmodel.foodAmount = infoModel.foodAmount;
                         dietmodel.kcal = infoModel.kcal;
