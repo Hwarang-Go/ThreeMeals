@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.hwarang.threemealsdev.R;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -83,6 +84,8 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
     public void onBindViewHolder(final MyViewHolder holder, int position) {
 
 
+        Collections.reverse(sData);
+
         ArrayList<PieEntry> yValues = new ArrayList<PieEntry>();
         if(sData.size()==0) {
             holder.txtDate.setText("");
@@ -93,8 +96,20 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
 
         }
         else{
-            holder.txtDate.setText(sData.get(position).txdate+" " + sData.get(position).typeOfMills);
-            //holder.txtFoodName.setText(data.get(position).txfood);
+            holder.txtDate.setText(sData.get(position).txdate+"   " + sData.get(position).typeOfMills);
+            String temp= new String();
+            int check = 1;
+            for(int i=0; i < sData.get(position).txfood.size();i++){
+                /*
+                if(i==check){
+                    temp += sData.get(position).txfood.get(i) + "\n";
+                    check +=2;
+                    continue;
+                }*/
+                temp += sData.get(position).txfood.get(i) + "\n\n";
+
+            }
+            holder.txtFoodName.setText(temp);
             /*
             double inputCar = data.get(position).car/(data.get(position).car+data.get(position).prt+data.get(position).fat);
             double inputprt = data.get(position).prt/(data.get(position).car+data.get(position).prt+data.get(position).fat);
@@ -115,11 +130,20 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
 
         pieDataSet.setColors(colors);
         pieDataSet.setSliceSpace(2);
-        pieDataSet.setValueTextSize(15);
+        pieDataSet.setValueTextSize(30f);
+        Legend lgd = holder.pieChart.getLegend();
+        lgd.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        lgd.setOrientation(Legend.LegendOrientation.HORIZONTAL);
+        lgd.setDrawInside(true);
+        lgd.setXEntrySpace(12f);
+        lgd.setYEntrySpace(5f);
+        lgd.setXOffset(3f);
+        lgd.setTextColor(Color.rgb(50,100,100));
+        lgd.setTextSize(13f);
 
         PieData pieData = new PieData(pieDataSet);
-        pieData.setValueTextSize(10f);
-        pieData.setValueTextColor(Color.WHITE);
+        pieData.setValueTextSize(14f);
+        pieData.setValueTextColor(R.color.titlebackground);
         holder.pieChart.setData(pieData);
 
         holder.pieChart.setDrawHoleEnabled(true);
@@ -132,7 +156,7 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
 
         //holder.pieChart.setCenterText("");
         //holder.pieChart.setCenterTextSize(12);
-        //holder.pieChart.setBackgroundResource(R.drawable.edge_draw);
+        //holder.pieChart.setBackgroundResource(R.drawable.pie_edge_draw);
         holder.pieChart.setDrawEntryLabels(false);
         /*
         Description description = new Description();
@@ -152,4 +176,6 @@ public class HomeTLAdapter extends RecyclerView.Adapter<HomeTLAdapter.MyViewHold
         return sData.size();
     }
 }
+
+
 

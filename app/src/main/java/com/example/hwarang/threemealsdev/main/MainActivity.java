@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity {
         toolbar = (Toolbar)findViewById(R.id.my_toolbar);
 
         setSupportActionBar(toolbar); // toolbar와 actionbar를 같게 만듬
-        toolbar.setBackgroundResource(R.color.mainColor);
+        toolbar.setBackgroundResource(R.color.white);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         // toolbar 설정 end
 
@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         // actionbar 설정 부분 start
         final ActionBar actionBar = getSupportActionBar();
         //actionBar.setTitle(getString(R.string.app_name));
-        actionBar.setHomeAsUpIndicator(R.mipmap.ic_launcher);
+        actionBar.setHomeAsUpIndicator(R.drawable.ic_ourlauncher2);
         actionBar.setDisplayHomeAsUpEnabled(true);
         // actionbar 설정 부분 end
 
