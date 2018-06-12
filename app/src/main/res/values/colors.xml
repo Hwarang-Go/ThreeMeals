@@ -5,10 +5,12 @@
     <color name="colorAccent">#FF4081</color>
     <color name="titlebackground">#000000</color>
 
+    <color name="mainColor2">#cff0e9</color>
     <color name="mainColor">#82DBC8</color>
+    <color name="mainColor3">#e8d5ce</color>
     <color name="blueGreen">#03d2a8</color>
     <color name="backGray">#efefef</color>
-    <color name="sGray">#d0d0d0</color>
+    <color name="sGray">#cfd5df</color>
     <color name="white">#FFF</color>
     <color name="font">#606060</color>
     <color name="submainColor">#31C0A9</color>

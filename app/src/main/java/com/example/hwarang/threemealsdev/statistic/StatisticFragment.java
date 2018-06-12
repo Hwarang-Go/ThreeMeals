@@ -281,7 +281,7 @@ public class StatisticFragment extends ListFragment {
         xAxis.setXOffset(0f);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
 
-            private String[] mActivities = new String[]{"단백질", "탄수화물", "지방", "비타민A", "비타민B2", "철분"};
+            private String[] mActivities = new String[]{"단백질", "탄수화물", "지방", "비타민A", "비타민B", "철분"};
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
@@ -298,14 +298,14 @@ public class StatisticFragment extends ListFragment {
         yAxis.setDrawLabels(false);
 
         Legend lgd = radarChart.getLegend();
-        lgd.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+        lgd.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
         lgd.setOrientation(Legend.LegendOrientation.HORIZONTAL);
         lgd.setDrawInside(true);
         lgd.setXEntrySpace(12f);
         lgd.setYEntrySpace(5f);
         lgd.setXOffset(-18f);
         lgd.setTextColor(Color.rgb(50,100,100));
-        lgd.setTextSize(12f);
+        lgd.setTextSize(15f);
         radarChart.setRotationEnabled(false);
 
 
@@ -388,7 +388,7 @@ public class StatisticFragment extends ListFragment {
         sets.add(set2);
 
         RadarData data = new RadarData((sets));
-        data.setValueTextSize(8f);
+        data.setValueTextSize(20f);
         data.setDrawValues(false);
         data.setValueTextColor(Color.WHITE);
 

@@ -16,6 +16,8 @@ import android.widget.TextView;
 
 import com.example.hwarang.threemealsdev.R;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -44,7 +46,30 @@ public class MoreButtonActivity extends Activity{
         for(int i = 0; i < mb.size();i++){
             item = new HashMap<String,String>();
             item.put("foodName",mb.get(i).foodName);
-            item.put("foodData",""+mb.get(i).foodData);
+            switch (title){
+
+                case "칼로리":
+                    item.put("foodData",mb.get(i).foodData + " Kcal");
+                    break;
+
+                case "탄수화물":
+                case "단백질" :
+                case "지방" :
+                    item.put("foodData",mb.get(i).foodData + " g");
+                    break;
+
+                case "비타민B" :
+                case "비타민C" :
+                case "칼슘" :
+                case "나트륨" :
+                case "철분" :
+                    item.put("foodData",mb.get(i).foodData + " mg");
+                    break;
+                case "비타민A" :
+                    item.put("foodData",mb.get(i).foodData + " \u00B5g");
+
+            }
+
             list.add(item);
 
         }
@@ -57,7 +82,10 @@ public class MoreButtonActivity extends Activity{
                 View view = super.getView(position, convertView, parent);
                 TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                 text1.setTextColor(Color.rgb(0,0,0));
-                text1.setTextSize(15f);
+                text1.setTextSize(17f);
+
+                TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+                text2.setTextColor(Color.rgb(0,0,0));
                 return view;
             };
         };
