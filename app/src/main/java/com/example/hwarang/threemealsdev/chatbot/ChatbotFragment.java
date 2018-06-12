@@ -197,7 +197,7 @@ public class ChatbotFragment extends Fragment implements AIListener {
     }
     @Override
     public void onListeningStarted() {
-        message.setText("asdf");
+
     }
     @Override
     public void onListeningCanceled() {
