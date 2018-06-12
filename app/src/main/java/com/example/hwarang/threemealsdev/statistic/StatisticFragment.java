@@ -281,7 +281,7 @@ public class StatisticFragment extends ListFragment {
         xAxis.setXOffset(0f);
         xAxis.setValueFormatter(new IAxisValueFormatter() {
 
-            private String[] mActivities = new String[]{"단백질", "탄수화물", "지방", "비타민A", "비타민B2", "철분"};
+            private String[] mActivities = new String[]{"단백질", "탄수화물", "지방", "비타민A", "비타민B", "철분"};
 
             @Override
             public String getFormattedValue(float value, AxisBase axis) {
